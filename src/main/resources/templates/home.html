@@ -1,0 +1,63 @@
+<html>
+
+<head>
+  <title>Home Page</title>
+  <style>
+    p {
+      color: red;
+    }
+
+    .component {
+      background-color: darkgray;
+      width: fit-content;
+      min-width: 500px;
+      margin: auto;
+      margin-bottom: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      border-radius: 10px;
+    }
+
+    .value {
+      background-color: gray;
+      border-radius: 5px;
+      padding: 20px;
+      color: white;
+      font-size: large;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .value:last-child {
+      margin-right: 0;
+    }
+
+    .logo {
+      margin: auto;
+      width: 200px;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+    .logo>img {
+      width: inherit;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="logo">
+    <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
+  </div>
+  <div class="component" th:each="tag: ${tags}">
+    <div class="value" th:text="${tag.id}">ID: <span></span></div>
+    <div class="value" th:text="${tag.name}">name: xxx</div>
+    <div class="value" th:text="${tag.supplier}">Supplier: xxx</div>
+    <div class="value" th:if="${tag.dateOfInstallment != null}" th:text="${tag.dateOfInstallment}">dateOfInstallment:
+      xxx</div>
+  </div>
+</body>
+
+</html>
