@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import nl.han.minor.alliander.rfid.prototype.persistence.TagRepository;
 
 @Controller
-public class HelloWorldController {
+public class IndexController {
   @Value("${spring.application.name}")
   String appName;
 
