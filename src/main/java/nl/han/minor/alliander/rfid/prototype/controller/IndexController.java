@@ -5,7 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import nl.han.minor.alliander.rfid.prototype.persistence.TagRepository;
+import nl.han.minor.alliander.rfid.prototype.persistence.SQLiteDB;
+import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.ITagDatabase;
+import nl.han.minor.alliander.rfid.prototype.service.TagConnector;
+import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
 
 @Controller
 public class IndexController {
@@ -19,8 +22,8 @@ public class IndexController {
 
   @GetMapping("/gettags")
   public String gettags(Model model) {
-    TagRepository tags = new TagRepository();
-    model.addAttribute("tags", tags.getTags());
+    IInfoConnector tags = new TagConnector();
+    model.addAttribute("tags", tags.getScannedTags());
     return "tags";
   }
 }
