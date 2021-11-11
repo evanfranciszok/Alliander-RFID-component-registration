@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tags</title>
+</head>
+
+<body>
+  <div class="component" th:each="tag: ${tags}">
+    <div class="value" th:text="${tag.id}">ID: <span></span></div>
+    <div class="value" th:text="${tag.name}">name: xxx</div>
+    <div class="value" th:text="${tag.supplier}">Supplier: xxx</div>
+    <div class="value" th:if="${tag.dateOfInstallment != null}" th:text="${tag.dateOfInstallment}">dateOfInstallment:
+      xxx</div>
+  </div>
+</body>
+
+</html>

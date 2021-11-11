@@ -14,9 +14,13 @@ public class IndexController {
 
   @GetMapping("/")
   public String homePage(Model model) {
+    return "home";
+  }
+
+  @GetMapping("/gettags")
+  public String gettags(Model model) {
     TagRepository tags = new TagRepository();
     model.addAttribute("tags", tags.getTags());
-    model.addAttribute("appName", appName);
-    return "home";
+    return "tags";
   }
 }
