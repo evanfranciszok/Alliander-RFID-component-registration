@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import nl.han.minor.alliander.rfid.prototype.persistence.SQLiteDB;
-import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.ITagDatabase;
 import nl.han.minor.alliander.rfid.prototype.service.TagConnector;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
 

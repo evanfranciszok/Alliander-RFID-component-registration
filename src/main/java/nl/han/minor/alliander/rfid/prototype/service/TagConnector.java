@@ -3,8 +3,6 @@ package nl.han.minor.alliander.rfid.prototype.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.yaml.snakeyaml.constructor.Construct;
-
 import nl.han.minor.alliander.rfid.prototype.persistence.PFScanner;
 import nl.han.minor.alliander.rfid.prototype.persistence.SQLiteDB;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.TagDAO;
