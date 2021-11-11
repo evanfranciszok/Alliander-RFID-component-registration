@@ -63,6 +63,7 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+  var prevHTML = '';
 
   $(document).ready(function () {
     gettags();
@@ -72,7 +73,11 @@
   function gettags() {
     $.ajax({
       url: "gettags", success: function (result) {
-        $("#tags").html(result);
+        if (prevHTML != result) {
+          $("#tags").html(result);
+          prevHTML = result;
+          console.log("update");
+        }
       }
     });
   }
