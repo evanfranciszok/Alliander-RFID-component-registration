@@ -1,4 +1,4 @@
-package nl.han.minor.alliander.rfid.prototype.persistence;
+package nl.han.minor.alliander.rfid.prototype.persistence.DAOs;
 
 import java.io.Serializable;
 
