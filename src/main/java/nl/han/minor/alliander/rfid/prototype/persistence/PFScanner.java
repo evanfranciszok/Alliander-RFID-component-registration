@@ -13,12 +13,27 @@ public class PFScanner implements IScanner {
   @Override
   public long[] scanTags() {
 
-    HttpClient client = HttpClient.newHttpClient();
-    HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://blockchain.info/ticker")).build();
-    client.sendAsync(request, BodyHandlers.ofString()).thenApply(HttpResponse::body).thenAccept(System.out::println)
-        .join();
+    getBearerToken();
+    // HttpClient client = HttpClient.newHttpClient();
+    // HttpRequest request =
+    // HttpRequest.newBuilder().uri(URI.create("https://blockchain.info/ticker")).build();
+    // client.sendAsync(request,
+    // BodyHandlers.ofString()).thenApply(HttpResponse::body).thenAccept(System.out::println)
+    // .join();
 
     return new long[] { 54321, 12345, 13579 };
+  }
+
+  private String bearerToken;
+
+  private String getBearerToken() {
+    if (bearerToken.isEmpty()) {
+      HttpClient client = HttpClient.newHttpClient();
+      HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://blockchain.info/ticker")).build();
+      client.sendAsync(request, BodyHandlers.ofString()).thenApply(HttpResponse::body).thenAccept(System.out::println)
+          .join();
+    }
+    return null;
   }
 
 }
