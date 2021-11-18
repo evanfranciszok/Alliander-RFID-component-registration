@@ -12,6 +12,7 @@ import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
 public class IndexController {
   @Value("${spring.application.name}")
   String appName;
+  IInfoConnector tags = new TagConnector();
 
   @GetMapping("/")
   public String homePage(Model model) {
@@ -20,7 +21,6 @@ public class IndexController {
 
   @GetMapping("/gettags")
   public String gettags(Model model) {
-    IInfoConnector tags = new TagConnector();
     model.addAttribute("tags", tags.getScannedTags());
     return "tags";
   }
