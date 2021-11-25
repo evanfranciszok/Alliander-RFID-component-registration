@@ -23,4 +23,9 @@ public class IndexController {
     model.addAttribute("tags", tags.getTags());
     return "tags";
   }
+
+  @GetMapping("/list")
+  public String makelist(Model model) {
+    return "list";
+  }
 }

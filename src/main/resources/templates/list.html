@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="stylesheet" th:href="@{/style/style.css}"> -->
+  <title>RFID registration</title>
+  <style>
+    p {
+      color: red;
+    }
+
+    .component {
+      background-color: darkgray;
+      width: fit-content;
+      min-width: 500px;
+      margin: auto;
+      margin-bottom: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      border-radius: 10px;
+    }
+
+    .value {
+      background-color: gray;
+      border-radius: 5px;
+      padding: 20px;
+      color: white;
+      font-size: large;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .value:last-child {
+      margin-right: 0;
+    }
+
+    .logo {
+      margin: auto;
+      width: 200px;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+    .logo>img {
+      width: inherit;
+    }
+  </style>
+</head>
+
+<body>
+
+  <body>
+    <li>Component</li>
+    <li>Artikelnummer</li>
+    <li>Productie datum</li>
+    <li>Installatie datum</li>
+    <li>Leverancier</li>
+    <br>
+    <table>
+      <tr>
+        <th>Company</th>
+        <th>Contact</th>
+        <th>Country</th>
+      </tr>
+      <tr>
+        <td>Alfreds Futterkiste</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>Centro comercial Moctezuma</td>
+        <td>Francisco Chang</td>
+        <td>Mexico</td>
+      </tr>
+    </table>
+  </body>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function () {
+    gettags();
+    setInterval(gettags, 2000);
+  });
+
+  function gettags() {
+    $.ajax({
+      url: "gettags", success: function (result) {
+        $("#tags").html(result);
+      }
+    });
+  }
+</script>
+
+</html>
