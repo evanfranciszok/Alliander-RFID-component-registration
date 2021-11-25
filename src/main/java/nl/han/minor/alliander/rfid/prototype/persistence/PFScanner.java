@@ -1,11 +1,16 @@
 package nl.han.minor.alliander.rfid.prototype.persistence;
 
+import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -19,34 +24,51 @@ public class PFScanner implements IScanner {
   private String baseURL = "http://192.168.1.10/api/";
   private String loginName = "admin";
   private String loginPassword = "b0fc-4801-4a30-8d39-2c01-6b6a";
-  private final HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
+  private final HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
   private JSONParser parser = new JSONParser();
 
-  /**
-   * @return long[]
-   */
-  @Override
-  public long[] scanTags() {
+  private boolean setContinous = false;
 
-    // getBearerToken();
+  @Override
+  public List<BigInteger> scanTags() {
+    System.out.println("scanning tags");
+    List<BigInteger> tagIDs = new ArrayList<>();
+    // tagIDs.add(new BigInteger("3400300833B2DDD9014000000000", 16));
+    // tagIDs.add(new BigInteger("3000E200001D700C0141242075F6", 16));
     try {
-      identification();
-      System.out.println("###########\nconfig");
-      readConfig();
-      System.out.println("###########\nData");
-      readData();
-      System.out.println("###########\nio");
-      getIOconfig();
-      System.out.println("###########\n\n");
+      if (!setContinous) {
+        setContinous();
+        setContinous = true;
+      }
+      System.out.println("new read");
+      JSONArray tags = readDataContinous();
+      for (Object o : tags) {
+        if (o instanceof JSONObject) {
+          if (((JSONObject) o).containsKey("UII")) {
+            tagIDs.add(new BigInteger((String) ((JSONObject) o).get("UII"), 16));
+          }
+        }
+      }
+      // System.out.println(readDataContinous());
+      // System.out.println("done with reading");
+
     } catch (Exception e) {
       System.err.println(e);
     }
 
-    return new long[] { 54321, 12345, 13579 };
+    return tagIDs;
   }
+  /**
+   * @return List<long>
+   */
+  // @Override
+  // public List<long> scanTags() {
+
+  // }
 
   /**
-   * Log out from the system (I don't know if this does anything in the scanner.)
+   * Log out from the system (I don't know if this even does anything as the
+   * bearer code still works after logout.)
    * 
    * @throws Exception
    */
@@ -66,10 +88,17 @@ public class PFScanner implements IScanner {
    */
   private void identification() throws Exception {
     HttpRequest request = createGetRequest("identification");
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    sendRequest(request);
+  }
 
-    // print status code
-    System.out.println(parser.parse(response.body()));
+  /**
+   * Return all antenna configurations
+   * 
+   * @throws Exception
+   */
+  private void antennas() throws Exception {
+    HttpRequest request = createGetRequest("rfid/antennas");
+    sendRequest(request);
   }
 
   /**
@@ -79,13 +108,27 @@ public class PFScanner implements IScanner {
    */
   private void getIOconfig() throws Exception {
     HttpRequest request = createGetRequest("rfid/io");
-    System.out.println(request.uri());
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    sendRequest(request);
+  }
 
-    System.out.println(response.statusCode());
-    // print status code
-    System.out.println(response.body());
+  /**
+   * Return all input configurations
+   * 
+   * @throws Exception
+   */
+  private void getInputs() throws Exception {
+    HttpRequest request = createGetRequest("rfid/io/inputs");
+    sendRequest(request);
+  }
 
+  /**
+   * Return all output configurations
+   * 
+   * @throws Exception
+   */
+  private void getOutputs() throws Exception {
+    HttpRequest request = createGetRequest("rfid/io/outputs");
+    sendRequest(request);
   }
 
   /**
@@ -95,28 +138,119 @@ public class PFScanner implements IScanner {
    */
   private void readConfig() throws Exception {
     HttpRequest request = createGetRequest("rfid/transponder/read");
-    System.out.println(request.uri());
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    System.out.println(response.statusCode());
-    // print status code
-    System.out.println(response.body());
+    sendRequest(request);
 
   }
 
   /**
-   * Return transponder data from continous read
+   * Return transponder data from continous read (rfid/transponder/read/data)
+   * 
+   * @throws Exception
+   * @return JSONArray
+   */
+  private JSONArray readData() throws Exception {
+    HttpRequest request = createPutRequest("rfid/transponder/read/data",
+        "{\"ids\":[1],\"execution_type\":\"SINGLE\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
+    HttpResponse<String> response = sendRequest(request);
+
+    Object jsonO = ((JSONArray) parser.parse(response.body())).get(0);
+    if (jsonO instanceof JSONObject) {
+      JSONObject json = (JSONObject) jsonO;
+      if (json.containsKey("readings")) {
+        if (json.get("readings") instanceof JSONArray) {
+          return (JSONArray) json.get("readings");
+        }
+      }
+    }
+    return null;
+
+  }
+
+  /**
+   * Set transponder data to continous read (rfid/transponder/read)
+   * 
+   * @throws Exception
+   * @return JSONArray
+   */
+  private void setContinous() throws Exception {
+    System.out.println("Prepairing read continous");
+    HttpRequest request = createPutRequest("rfid/transponder/read",
+        "{\"ids\":[1],\"execution_type\":\"CONTINUOUS\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
+    HttpResponse<String> response = sendRequest(request);
+    printRequestResult(response);
+  }
+
+  /**
+   * Return transponder data from continous read (rfid/transponder/read/data)
+   * 
+   * @throws Exception
+   * @return JSONArray
+   */
+  private JSONArray readDataContinous() throws Exception {
+    HttpRequest request = createGetRequest("rfid/transponder/read/data");
+    HttpResponse<String> response = sendRequest(request);
+
+    Object jsonO = ((JSONArray) parser.parse(response.body())).get(0);
+    if (jsonO instanceof JSONObject) {
+      JSONObject json = (JSONObject) jsonO;
+      if (json.containsKey("readings")) {
+        System.out.println("readings " + json.get("readings"));
+        if (json.get("readings") instanceof JSONArray) {
+          return (JSONArray) json.get("readings");
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Set transponder data to continous read (rfid/transponder/read)
+   * 
+   * @throws Exception
+   * @return JSONArray
+   */
+  private void setContinousStop() throws Exception {
+    HttpRequest request = createPutRequest("rfid/transponder/read",
+        "{\"ids\":[1],\"execution_type\":\"STOP\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
+    HttpResponse<String> response = sendRequest(request);
+  }
+
+  /**
+   * Get the write transponder configuration
    * 
    * @throws Exception
    */
-  private void readData() throws Exception {
-    HttpRequest request = createGetRequest("rfid/transponder/read/data");
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+  private void writeConfiguration() throws Exception {
+    HttpRequest request = createGetRequest("rfid/transponder/write");
+    sendRequest(request);
+  }
 
-    System.out.println(response.statusCode());
-    // print status code
-    System.out.println(response.body());
+  /**
+   * Return transponder data from continous write
+   * 
+   * @throws Exception
+   */
+  private void readDataFromContinousWrite() throws Exception {
+    HttpRequest request = createGetRequest("rfid/transponder/write/data");
+    sendRequest(request);
+  }
 
+  /**
+   * Get kill transponder configuration
+   * 
+   * @throws Exception
+   */
+  private void readKillConfiguration() throws Exception {
+    HttpRequest request = createGetRequest("rfid/transponder/kill");
+    sendRequest(request);
+  }
+
+  /**
+   * @throws Exception
+   */
+  private void systemEvents() throws Exception {
+    HttpRequest request = createGetRequest("system/events");
+    sendRequest(request);
   }
 
   /**
@@ -129,6 +263,48 @@ public class PFScanner implements IScanner {
     return HttpRequest.newBuilder().GET().uri(URI.create(baseURL + url))
         .setHeader("User-Agent", "Java 11 HttpClient Bot").header("Authorization", "Bearer " + getBearerToken())
         .build();
+  }
+
+  /**
+   * Send the request
+   * 
+   * @param request
+   * @return HttpResponse<String>
+   * @throws IOException
+   * @throws InterruptedException
+   */
+  private HttpResponse<String> sendRequest(HttpRequest request) throws IOException, InterruptedException {
+    // printRequest(request);
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    // printRequestResult(response);
+    return response;
+  }
+
+  /**
+   * Prints the URI from the http request
+   * 
+   * @param request
+   */
+  private void printRequest(HttpRequest request) {
+    // print URI
+    System.out.println("URI:\n " + request.uri());
+    // print Header
+    System.out.println("Headers:");
+    for (var entry : request.headers().map().entrySet()) {
+      System.out.println(entry.getKey() + " :: " + entry.getValue());
+    }
+  }
+
+  /**
+   * Prints the result of the request
+   * 
+   * @param response
+   */
+  private void printRequestResult(HttpResponse<String> response) {
+    // print status code
+    System.out.println("HTTP response code:\n " + response.statusCode());
+    // print response body
+    System.out.println("Resonse body:\n " + (response.body().isEmpty() ? "empty" : response.body()));
   }
 
   /**
@@ -145,11 +321,25 @@ public class PFScanner implements IScanner {
   }
 
   /**
+   * Create Put HttpRequest object for a put request
+   * 
+   * @param url  The relative URL (so without the base url) to the endpoint
+   * @param body
+   * @return HttpRequest
+   */
+  private HttpRequest createPutRequest(String url, String body) {
+    return HttpRequest.newBuilder().PUT(BodyPublishers.ofString(body)).uri(URI.create(baseURL + url))
+        .setHeader("User-Agent", "Java 11 HttpClient Bot").header("Authorization", "Bearer " + getBearerToken())
+        .header("Content-Type", "application/json").build();
+  }
+
+  /**
    * @return String
    */
   private String getBearerToken() {
     if (bearerToken != null) {
       return bearerToken;
+      // TODO implement renew API call if bearer has expired
     } else {
       try {
         String token = login();
@@ -172,12 +362,14 @@ public class PFScanner implements IScanner {
    * @throws Exception
    */
   private String login() throws Exception {
+    System.out.println("Prepairing login");
     HttpRequest request = HttpRequest.newBuilder()
         .POST(BodyPublishers.ofString("{ \"username\":\"" + loginName + "\",\"password\":\"" + loginPassword + "\" }"))
         .uri(URI.create(baseURL + "auth/login")).setHeader("User-Agent", "Java 11 HttpClient Bot")
         .header("Content-Type", "application/json").build();
-
+    // printRequest(request);
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    // printRequestResult(response);
 
     System.out.println("inlog attempt HTTP code: " + response.statusCode());
     JSONObject json = (JSONObject) parser.parse(response.body());

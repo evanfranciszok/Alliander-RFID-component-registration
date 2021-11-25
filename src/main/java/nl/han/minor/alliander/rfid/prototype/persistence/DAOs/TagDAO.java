@@ -1,17 +1,18 @@
 package nl.han.minor.alliander.rfid.prototype.persistence.DAOs;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 public class TagDAO implements Serializable {
 
-  public TagDAO(long id, String supplier, String name, String dOI) {
+  public TagDAO(BigInteger id, String supplier, String name, String dOI) {
     this.id = id;
     this.supplier = supplier;
     this.name = name;
     this.dateOfInstallment = dOI;
   }
 
-  private long id;
+  private BigInteger id;
   private String supplier;
   private String name;
   private String dateOfInstallment;
@@ -21,11 +22,11 @@ public class TagDAO implements Serializable {
     return id + supplier;
   }
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

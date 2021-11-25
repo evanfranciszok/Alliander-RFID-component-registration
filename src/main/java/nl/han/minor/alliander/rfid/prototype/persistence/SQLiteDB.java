@@ -6,6 +6,7 @@ import java.util.List;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.TagDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.ITagDatabase;
 
+import java.math.BigInteger;
 import java.sql.*;
 
 public class SQLiteDB implements ITagDatabase {
@@ -13,7 +14,7 @@ public class SQLiteDB implements ITagDatabase {
   private static Statement stmt = null;
 
   @Override
-  public TagDAO getTagsFromID(long id) {
+  public TagDAO getTagsFromID(BigInteger id) {
     TagDAO tag = null;
     try {
       makeConnection();
@@ -24,7 +25,8 @@ public class SQLiteDB implements ITagDatabase {
           Date d = new Date((long) Integer.parseInt(resultSet.getString("DATE_OF_INSTALLMENT")) * 1000);
           date = d.toString();
         }
-        tag = new TagDAO(resultSet.getInt("ID"), resultSet.getString("SUPPLIER"), resultSet.getString("NAME"), date);
+        tag = new TagDAO(resultSet.getBigDecimal("ID").toBigInteger(), resultSet.getString("SUPPLIER"),
+            resultSet.getString("NAME"), date);
       }
 
     } catch (Exception e) {
@@ -46,8 +48,8 @@ public class SQLiteDB implements ITagDatabase {
           Date d = new Date((long) Integer.parseInt(resultSet.getString("DATE_OF_INSTALLMENT")) * 1000);
           date = d.toString();
         }
-        tags.add(
-            new TagDAO(resultSet.getInt("ID"), resultSet.getString("SUPPLIER"), resultSet.getString("NAME"), date));
+        tags.add(new TagDAO(resultSet.getBigDecimal("ID").toBigInteger(), resultSet.getString("SUPPLIER"),
+            resultSet.getString("NAME"), date));
       }
       resultSet.close();
       closeConnection();

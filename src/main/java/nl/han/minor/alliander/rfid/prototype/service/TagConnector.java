@@ -1,5 +1,6 @@
 package nl.han.minor.alliander.rfid.prototype.service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +23,12 @@ public class TagConnector implements IInfoConnector {
 
   public List<TagDAO> getScannedTags() {
     List<TagDAO> tags = new ArrayList<TagDAO>();
-    for (long id : scanner.scanTags()) {
-      TagDAO tag = database.getTagsFromID(id);
-      if (tag != null)
-        tags.add(tag);
+    for (BigInteger id : scanner.scanTags()) {
+      tags.add(new TagDAO(id, "-", "-", "1400000000"));
+      // System.out.println(id + " ###");
+      // TagDAO tag = database.getTagsFromID(id);
+      // if (tag != null)
+      // tags.add(tag);
     }
     return tags;
   }
