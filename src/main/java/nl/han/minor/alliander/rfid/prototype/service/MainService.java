@@ -64,7 +64,6 @@ public class MainService implements IRFIDController {
   private void addUniqueTagsToList(List<TagDAO> newTags) {
     if (newTags != null) {
       for (TagDAO newTag : newTags) {
-        System.out.println("new tag " + newTag.getId());
         boolean isInList = false;
         for (TagDAO tag : tags) {
           if (tag.getId().equals(newTag.getId())) {
@@ -74,7 +73,6 @@ public class MainService implements IRFIDController {
         }
         if (!isInList) {
           tags.add(newTag);
-          System.out.println("tags: " + tags);
         }
       }
     }
