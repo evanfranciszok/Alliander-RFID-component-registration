@@ -1,27 +1,42 @@
 package nl.han.minor.alliander.rfid.prototype.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import nl.han.minor.alliander.rfid.prototype.service.TagConnector;
-import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
+import nl.han.minor.alliander.rfid.prototype.service.MainService;
+import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
 
 @Controller
 public class IndexController {
   @Value("${spring.application.name}")
   String appName;
-  IInfoConnector tags = new TagConnector();
+  IRFIDController rfid = new MainService();
 
   @GetMapping("/")
   public String homePage(Model model) {
     return "home";
   }
 
-  @GetMapping("/gettags")
-  public String gettags(Model model) {
-    model.addAttribute("tags", tags.getScannedTags());
+  @GetMapping("/api/startscan")
+  public ResponseEntity<String> startScan() {
+    rfid.startScan();
+    return new ResponseEntity<>("scan started", HttpStatus.OK);
+  }
+
+  @GetMapping("/api/stopscan")
+  public ResponseEntity<String> stopScan() {
+    rfid.stopScan();
+    return new ResponseEntity<>("scan started", HttpStatus.OK);
+  }
+
+  @GetMapping("/api/gettagsfromscan")
+  public String getTagsFromScan(Model model) {
+    model.addAttribute("tags", rfid.getTagsFromScan());
     return "tags";
   }
+
 }

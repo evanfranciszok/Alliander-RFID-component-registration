@@ -5,4 +5,8 @@ import java.util.List;
 
 public interface IScanner {
   public List<BigInteger> scanTags();
+
+  public boolean startScan();
+
+  public boolean stopScan();
 }

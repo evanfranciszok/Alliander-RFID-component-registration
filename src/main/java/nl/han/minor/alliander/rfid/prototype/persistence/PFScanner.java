@@ -31,16 +31,12 @@ public class PFScanner implements IScanner {
 
   @Override
   public List<BigInteger> scanTags() {
-    System.out.println("scanning tags");
     List<BigInteger> tagIDs = new ArrayList<>();
-    // tagIDs.add(new BigInteger("3400300833B2DDD9014000000000", 16));
-    // tagIDs.add(new BigInteger("3000E200001D700C0141242075F6", 16));
     try {
       if (!setContinous) {
         setContinous();
         setContinous = true;
       }
-      System.out.println("new read");
       JSONArray tags = readDataContinous();
       for (Object o : tags) {
         if (o instanceof JSONObject) {
@@ -49,14 +45,35 @@ public class PFScanner implements IScanner {
           }
         }
       }
-      // System.out.println(readDataContinous());
-      // System.out.println("done with reading");
-
     } catch (Exception e) {
       System.err.println(e);
     }
 
     return tagIDs;
+  }
+
+  @Override
+  public boolean startScan() {
+    try {
+      setContinous();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("error");
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public boolean stopScan() {
+    try {
+      stopContinous();
+      logout();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
   }
   /**
    * @return List<long>
@@ -65,21 +82,6 @@ public class PFScanner implements IScanner {
   // public List<long> scanTags() {
 
   // }
-
-  /**
-   * Log out from the system (I don't know if this even does anything as the
-   * bearer code still works after logout.)
-   * 
-   * @throws Exception
-   */
-  private void logout() throws Exception {
-    HttpRequest request = createPostRequest("auth/logout",
-        "{ \"username\":\"admin\", \"password\":\"b0fc-4801-4a30-8d39-2c01-6b6a\" }");
-
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    System.out.println("Logging out attempt resulted with HTTP code: " + response.statusCode());
-  }
 
   /**
    * Returns the device identification
@@ -173,11 +175,21 @@ public class PFScanner implements IScanner {
    * @return JSONArray
    */
   private void setContinous() throws Exception {
-    System.out.println("Prepairing read continous");
     HttpRequest request = createPutRequest("rfid/transponder/read",
         "{\"ids\":[1],\"execution_type\":\"CONTINUOUS\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
     HttpResponse<String> response = sendRequest(request);
-    printRequestResult(response);
+  }
+
+  /**
+   * Set transponder data to stop continous read (rfid/transponder/read)
+   * 
+   * @throws Exception
+   * @return JSONArray
+   */
+  private void stopContinous() throws Exception {
+    HttpRequest request = createPutRequest("rfid/transponder/read",
+        "{\"ids\":[1],\"execution_type\":\"STOP\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
+    HttpResponse<String> response = sendRequest(request);
   }
 
   /**
@@ -194,7 +206,6 @@ public class PFScanner implements IScanner {
     if (jsonO instanceof JSONObject) {
       JSONObject json = (JSONObject) jsonO;
       if (json.containsKey("readings")) {
-        System.out.println("readings " + json.get("readings"));
         if (json.get("readings") instanceof JSONArray) {
           return (JSONArray) json.get("readings");
         }
@@ -376,5 +387,20 @@ public class PFScanner implements IScanner {
     if (json.containsKey("token"))
       return json.get("token").toString();
     return null;
+  }
+
+  /**
+   * Log out from the system (I don't know if this even does anything as the
+   * bearer code still works after logout.)
+   * 
+   * @throws Exception
+   */
+  private void logout() throws Exception {
+    HttpRequest request = createPostRequest("auth/logout",
+        "{ \"username\":\"admin\", \"password\":\"b0fc-4801-4a30-8d39-2c01-6b6a\" }");
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    bearerToken = null;
+    System.out.println("Logging out attempt resulted with HTTP code: " + response.statusCode());
   }
 }
