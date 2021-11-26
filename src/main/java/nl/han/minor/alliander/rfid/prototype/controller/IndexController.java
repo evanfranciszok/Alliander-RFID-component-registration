@@ -39,4 +39,8 @@ public class IndexController {
     return "tags";
   }
 
+  @GetMapping("/list")
+  public String makelist(Model model) {
+    return "list";
+  }
 }
