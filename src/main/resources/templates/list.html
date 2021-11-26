@@ -49,6 +49,33 @@
     .logo>img {
       width: inherit;
     }
+
+    .accordion__button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      background: #333333;
+      color: #ffffff;
+      text-align: left;
+      transition: 0.2s;
+    }
+
+    .accordion__button::after {
+      content: '\25be';
+      float: right;
+      transform: scale(1.5);
+    }
+
+    .accordion__button--active {
+      background: #555555;
+    }
+
+    .accordion__button--active::after {
+      content: '\25b4';
+    }
   </style>
 </head>
 
@@ -60,41 +87,24 @@
     <li>Productie datum</li>
     <li>Installatie datum</li>
     <li>Leverancier</li>
-    <br>
-    <table>
-      <tr>
-        <th>Company</th>
-        <th>Contact</th>
-        <th>Country</th>
-      </tr>
-      <tr>
-        <td>Alfreds Futterkiste</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-      </tr>
-      <tr>
-        <td>Centro comercial Moctezuma</td>
-        <td>Francisco Chang</td>
-        <td>Mexico</td>
-      </tr>
-    </table>
+
+    <div class="accordion">
+      <button type="button" class="accordion__button">Expand content</button>
+      <div class="accordion__content">
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium illum laboriosam tempora excepturi
+          blanditiis? Aliquid, suscipit odio beatae fuga voluptatibus ducimus quas hic commodi laudantium voluptatem
+          doloribus magni reiciendis quasi.
+        </p>
+      </div>
+    </div>
+    >
   </body>
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-  $(document).ready(function () {
-    gettags();
-    setInterval(gettags, 2000);
-  });
 
-  function gettags() {
-    $.ajax({
-      url: "gettags", success: function (result) {
-        $("#tags").html(result);
-      }
-    });
-  }
 </script>
 
 </html>
