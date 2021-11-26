@@ -75,98 +75,6 @@ public class PFScanner implements IScanner {
     }
     return true;
   }
-  /**
-   * @return List<long>
-   */
-  // @Override
-  // public List<long> scanTags() {
-
-  // }
-
-  /**
-   * Returns the device identification
-   * 
-   * @throws Exception
-   */
-  private void identification() throws Exception {
-    HttpRequest request = createGetRequest("identification");
-    sendRequest(request);
-  }
-
-  /**
-   * Return all antenna configurations
-   * 
-   * @throws Exception
-   */
-  private void antennas() throws Exception {
-    HttpRequest request = createGetRequest("rfid/antennas");
-    sendRequest(request);
-  }
-
-  /**
-   * Get input and output configurations
-   * 
-   * @throws Exception
-   */
-  private void getIOconfig() throws Exception {
-    HttpRequest request = createGetRequest("rfid/io");
-    sendRequest(request);
-  }
-
-  /**
-   * Return all input configurations
-   * 
-   * @throws Exception
-   */
-  private void getInputs() throws Exception {
-    HttpRequest request = createGetRequest("rfid/io/inputs");
-    sendRequest(request);
-  }
-
-  /**
-   * Return all output configurations
-   * 
-   * @throws Exception
-   */
-  private void getOutputs() throws Exception {
-    HttpRequest request = createGetRequest("rfid/io/outputs");
-    sendRequest(request);
-  }
-
-  /**
-   * Get the read transponder configuration
-   * 
-   * @throws Exception
-   */
-  private void readConfig() throws Exception {
-    HttpRequest request = createGetRequest("rfid/transponder/read");
-    sendRequest(request);
-
-  }
-
-  /**
-   * Return transponder data from continous read (rfid/transponder/read/data)
-   * 
-   * @throws Exception
-   * @return JSONArray
-   */
-  private JSONArray readData() throws Exception {
-    HttpRequest request = createPutRequest("rfid/transponder/read/data",
-        "{\"ids\":[1],\"execution_type\":\"SINGLE\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
-    HttpResponse<String> response = sendRequest(request);
-
-    Object jsonO = ((JSONArray) parser.parse(response.body())).get(0);
-    if (jsonO instanceof JSONObject) {
-      JSONObject json = (JSONObject) jsonO;
-      if (json.containsKey("readings")) {
-        if (json.get("readings") instanceof JSONArray) {
-          return (JSONArray) json.get("readings");
-        }
-      }
-    }
-    return null;
-
-  }
 
   /**
    * Set transponder data to continous read (rfid/transponder/read)
@@ -177,7 +85,7 @@ public class PFScanner implements IScanner {
   private void setContinous() throws Exception {
     HttpRequest request = createPutRequest("rfid/transponder/read",
         "{\"ids\":[1],\"execution_type\":\"CONTINUOUS\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
-    HttpResponse<String> response = sendRequest(request);
+    sendRequest(request);
   }
 
   /**
@@ -189,7 +97,7 @@ public class PFScanner implements IScanner {
   private void stopContinous() throws Exception {
     HttpRequest request = createPutRequest("rfid/transponder/read",
         "{\"ids\":[1],\"execution_type\":\"STOP\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
-    HttpResponse<String> response = sendRequest(request);
+    sendRequest(request);
   }
 
   /**
@@ -212,56 +120,6 @@ public class PFScanner implements IScanner {
       }
     }
     return null;
-  }
-
-  /**
-   * Set transponder data to continous read (rfid/transponder/read)
-   * 
-   * @throws Exception
-   * @return JSONArray
-   */
-  private void setContinousStop() throws Exception {
-    HttpRequest request = createPutRequest("rfid/transponder/read",
-        "{\"ids\":[1],\"execution_type\":\"STOP\",\"memory\":{\"bank\":\"USER\",\"block_address\":0},\"length\":8}");
-    HttpResponse<String> response = sendRequest(request);
-  }
-
-  /**
-   * Get the write transponder configuration
-   * 
-   * @throws Exception
-   */
-  private void writeConfiguration() throws Exception {
-    HttpRequest request = createGetRequest("rfid/transponder/write");
-    sendRequest(request);
-  }
-
-  /**
-   * Return transponder data from continous write
-   * 
-   * @throws Exception
-   */
-  private void readDataFromContinousWrite() throws Exception {
-    HttpRequest request = createGetRequest("rfid/transponder/write/data");
-    sendRequest(request);
-  }
-
-  /**
-   * Get kill transponder configuration
-   * 
-   * @throws Exception
-   */
-  private void readKillConfiguration() throws Exception {
-    HttpRequest request = createGetRequest("rfid/transponder/kill");
-    sendRequest(request);
-  }
-
-  /**
-   * @throws Exception
-   */
-  private void systemEvents() throws Exception {
-    HttpRequest request = createGetRequest("system/events");
-    sendRequest(request);
   }
 
   /**
@@ -289,33 +147,6 @@ public class PFScanner implements IScanner {
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     // printRequestResult(response);
     return response;
-  }
-
-  /**
-   * Prints the URI from the http request
-   * 
-   * @param request
-   */
-  private void printRequest(HttpRequest request) {
-    // print URI
-    System.out.println("URI:\n " + request.uri());
-    // print Header
-    System.out.println("Headers:");
-    for (var entry : request.headers().map().entrySet()) {
-      System.out.println(entry.getKey() + " :: " + entry.getValue());
-    }
-  }
-
-  /**
-   * Prints the result of the request
-   * 
-   * @param response
-   */
-  private void printRequestResult(HttpResponse<String> response) {
-    // print status code
-    System.out.println("HTTP response code:\n " + response.statusCode());
-    // print response body
-    System.out.println("Resonse body:\n " + (response.body().isEmpty() ? "empty" : response.body()));
   }
 
   /**
