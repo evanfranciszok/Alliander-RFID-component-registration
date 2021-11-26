@@ -141,10 +141,117 @@
       border-collapse: collapse;
       padding: 2px 0px 2px 5px;
     }
+
+
+    /* CSS */
+    .button-3 {
+      appearance: none;
+      background-color: #2ea44f;
+      border: 1px solid rgba(27, 31, 35, .15);
+      border-radius: 6px;
+      box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+      box-sizing: border-box;
+      width: 120px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-block;
+      font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 20px;
+      padding: 15px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      vertical-align: middle;
+      white-space: nowrap;
+
+    }
+
+    .button-3:focus:not(:focus-visible):not(.focus-visible) {
+      box-shadow: none;
+      outline: none;
+    }
+
+    .button-3:hover {
+      background-color: #2c974b;
+    }
+
+    .button-3:focus {
+      box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+      outline: none;
+    }
+
+    .button-3:disabled {
+      background-color: #94d3a2;
+      border-color: rgba(27, 31, 35, .1);
+      color: rgba(255, 255, 255, .8);
+      cursor: default;
+    }
+
+    .button-3:active {
+      background-color: #298e46;
+      box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+    }
+
+    .topbar {
+      justify-content: left;
+      display: flex;
+      gap: 10px;
+
+    }
+
+    .loader {
+      border: 16px solid #f3f3f3;
+      /* Light grey */
+      border-top: 16px solid #90aabb;
+      /* Blue */
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      animation: spin 2s linear infinite;
+      display: none;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .logo {
+      margin: auto;
+      width: 200px;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+    .logo>img {
+      width: inherit;
+    }
   </style>
 </head>
 
 <body>
+  <div class="logo">
+    <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
+  </div>
+
+  <div class="topbar">
+    <input onclick="change()" type="button" value="Start scan" id="start-scan" class="button-3"></input>
+    <div class="loader" id="loadergif"> </div>
+
+  </div>
+
+
 
   <div class="tabel">
     <Div class="head">Component</Div>
@@ -193,6 +300,7 @@
   </div>
 </body>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
   document.querySelectorAll('.accordion__button').forEach(button => {
@@ -208,6 +316,26 @@
       }
     })
   })
+</script>
+
+<script>
+  // let btnStart = document.querySelector('.button-3');
+  // let message = document.querySelector('h1');
+  function change() {
+    var button = document.getElementById("start-scan");
+    var loadergif = document.getElementById("loadergif");
+    if (button.value == "Stop scan") {
+      button.style.background = "#2ea44f"
+      button.value = "Start scan";
+      loadergif.style.display = "none";
+    }
+    else {
+      button.value = "Stop scan";
+      button.style.background = "#ff0000";
+      loadergif.style.display = "block";
+    }
+  }
+
 </script>
 
 </html>
