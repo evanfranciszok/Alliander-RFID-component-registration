@@ -71,7 +71,7 @@ public class MainService implements IRFIDController {
       for (TagDAO newTag : newTags) {
         boolean isInList = false;
         for (TagDAO tag : tags) {
-          if (tag.getId().equals(newTag.getId())) {
+          if (tag.getId() == newTag.getId()) {
             isInList = true;
             break;
           }

@@ -1,34 +1,26 @@
 package nl.han.minor.alliander.rfid.prototype.persistence.DAOs;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 public class TagDAO implements Serializable {
 
-  public TagDAO(BigInteger id, String supplier, String name, String dOI) {
+  public TagDAO(int id, String sn, String sup, String nam, String prodDate, String dOI, String com) {
     this.id = id;
-    this.supplier = supplier;
-    this.name = name;
+    this.serialNumber = sn;
+    this.supplier = sup;
+    this.name = nam;
+    this.productionDate = prodDate;
     this.dateOfInstallment = dOI;
+    this.comment = com;
   }
 
-  private BigInteger id;
+  private int id;
+  private String serialNumber;
   private String supplier;
   private String name;
+  private String productionDate;
   private String dateOfInstallment;
-
-  @Override
-  public String toString() {
-    return id + supplier;
-  }
-
-  public BigInteger getId() {
-    return id;
-  }
-
-  public void setId(BigInteger id) {
-    this.id = id;
-  }
+  private String comment;
 
   public String getSupplier() {
     return supplier;
@@ -52,5 +44,42 @@ public class TagDAO implements Serializable {
 
   public void setDateOfInstallment(String dateOfInstallment) {
     this.dateOfInstallment = dateOfInstallment;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public String getSerialNumber() {
+    return serialNumber;
+  }
+
+  public void setSerialNumber(String serialNumber) {
+    this.serialNumber = serialNumber;
+  }
+
+  public String getProductionDate() {
+    return productionDate;
+  }
+
+  public void setProductionDate(String productionDate) {
+    this.productionDate = productionDate;
+  }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
+  @Override
+  public String toString() {
+    return "TagDAO [id=" + id + ", name=" + name + "]";
   }
 }

@@ -56,6 +56,7 @@ public class PFScanner implements IScanner {
   public boolean startScan() {
     try {
       setContinous();
+      setContinous = true;
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("error");
@@ -68,7 +69,7 @@ public class PFScanner implements IScanner {
   public boolean stopScan() {
     try {
       stopContinous();
-      logout();
+      // logout();
     } catch (Exception e) {
       e.printStackTrace();
       return false;
@@ -143,24 +144,28 @@ public class PFScanner implements IScanner {
    * @throws InterruptedException
    */
   private HttpResponse<String> sendRequest(HttpRequest request) throws IOException, InterruptedException {
-    printRequest(request);
+    // printRequest(request);
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    printRequestResult(response);
+    // printRequestResult(response);
     return response;
   }
 
-  /**
-   * Create a HttpRequest object for a post request
-   * 
-   * @param url  The relative URL (so without the base url) to the endpoint
-   * @param body
-   * @return HttpRequest
-   */
-  private HttpRequest createPostRequest(String url, String body) {
-    return HttpRequest.newBuilder().POST(BodyPublishers.ofString(body)).uri(URI.create(baseURL + url))
-        .setHeader("User-Agent", "Java 11 HttpClient Bot").header("Authorization", "Bearer " + getBearerToken())
-        .header("Content-Type", "application/json").build();
-  }
+  // /**
+  // * Create a HttpRequest object for a post request
+  // *
+  // * @param url The relative URL (so without the base url) to the endpoint
+  // * @param body
+  // * @return HttpRequest
+  // */
+  // private HttpRequest createPostRequest(String url, String body) {
+  // System.out.println("body:\n" + body);
+  // return
+  // HttpRequest.newBuilder().POST(BodyPublishers.ofString(body)).uri(URI.create(baseURL
+  // + url))
+  // .setHeader("User-Agent", "Java 11 HttpClient Bot").header("Authorization",
+  // "Bearer " + getBearerToken())
+  // .header("Content-Type", "application/json").build();
+  // }
 
   /**
    * Create Put HttpRequest object for a put request
@@ -170,6 +175,7 @@ public class PFScanner implements IScanner {
    * @return HttpRequest
    */
   private HttpRequest createPutRequest(String url, String body) {
+    System.out.println("body:\n" + body);
     return HttpRequest.newBuilder().PUT(BodyPublishers.ofString(body)).uri(URI.create(baseURL + url))
         .setHeader("User-Agent", "Java 11 HttpClient Bot").header("Authorization", "Bearer " + getBearerToken())
         .header("Content-Type", "application/json").build();
@@ -220,18 +226,50 @@ public class PFScanner implements IScanner {
     return null;
   }
 
-  /**
-   * Log out from the system (I don't know if this even does anything as th\e
-   * bearer code still works after logout.)
-   * 
-   * @throws Exception
-   */
-  private void logout() throws Exception {
-    HttpRequest request = createPostRequest("auth/logout",
-        "{ \"username\":\"admin\", \"password\":\"b0fc-4801-4a30-8d39-2c01-6b6a\" }");
+  // /**
+  // * Log out from the system (I don't know if this even does anything as th\e
+  // * bearer code still works after logout.)
+  // *
+  // * @throws Exception
+  // */
+  // private void logout() throws Exception {
+  // HttpRequest request = createPostRequest("auth/logout",
+  // "{ \"username\":\"admin\", \"password\":\"b0fc-4801-4a30-8d39-2c01-6b6a\"
+  // }");
+  // printRequest(request);
+  // HttpResponse<String> response = httpClient.send(request,
+  // HttpResponse.BodyHandlers.ofString());
+  // bearerToken = null;
+  // printRequestResult(response);
+  // // System.out.println("Logging out attempt resulted with HTTP code: " +
+  // // response.statusCode());
+  // }
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    bearerToken = null;
-    System.out.println("Logging out attempt resulted with HTTP code: " + response.statusCode());
-  }
+  // /**
+  // * Prints the URI from the http request
+  // *
+  // * @param request
+  // */
+  // private void printRequest(HttpRequest request) {
+  // // print URI
+  // System.out.println("URI:\n " + request.uri());
+  // // print Header
+  // System.out.println("Headers:");
+  // for (var entry : request.headers().map().entrySet()) {
+  // System.out.println(entry.getKey() + " :: " + entry.getValue());
+  // }
+  // }
+
+  // /**
+  // * Prints the result of the request
+  // *
+  // * @param response
+  // */
+  // private void printRequestResult(HttpResponse<String> response) {
+  // // print status code
+  // System.out.println("HTTP response code:\n " + response.statusCode());
+  // // print response body
+  // System.out.println("Resonse body:\n " + (response.body().isEmpty() ? "empty"
+  // : response.body()));
+  // }
 }
