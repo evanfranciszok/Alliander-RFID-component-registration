@@ -58,6 +58,8 @@
     <div class="logo">
       <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
     </div>
+    <button onclick="startScanning()">Start scan</button>
+    <button onclick="stopScanning()">Stop scan</button>
     <div id="tags"></div>
   </body>
 </body>
@@ -72,7 +74,7 @@
 
   function gettags() {
     $.ajax({
-      url: "gettags", success: function (result) {
+      url: "api/gettagsfromscan", success: function (result) {
         if (prevHTML != result) {
           $("#tags").html(result);
           prevHTML = result;
@@ -80,6 +82,14 @@
         }
       }
     });
+  }
+
+  function startScanning() {
+    fetch("/api/startscan");
+  }
+
+  function stopScanning() {
+    fetch("/api/stopscan");
   }
 </script>
 
