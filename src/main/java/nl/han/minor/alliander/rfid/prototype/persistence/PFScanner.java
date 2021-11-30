@@ -285,9 +285,9 @@ public class PFScanner implements IScanner {
    * @throws InterruptedException
    */
   private HttpResponse<String> sendRequest(HttpRequest request) throws IOException, InterruptedException {
-    // printRequest(request);
+    printRequest(request);
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    // printRequestResult(response);
+    printRequestResult(response);
     return response;
   }
 
@@ -390,7 +390,7 @@ public class PFScanner implements IScanner {
   }
 
   /**
-   * Log out from the system (I don't know if this even does anything as the
+   * Log out from the system (I don't know if this even does anything as th\e
    * bearer code still works after logout.)
    * 
    * @throws Exception

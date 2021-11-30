@@ -17,4 +17,6 @@ public interface IRFIDController {
   // setten van msr ID
   // ophalen van msr ID's
   // ophalen bekende gegevens van MSR
+
+  public void resetScan();
 }

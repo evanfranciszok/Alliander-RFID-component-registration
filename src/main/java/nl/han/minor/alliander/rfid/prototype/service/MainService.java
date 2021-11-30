@@ -61,6 +61,11 @@ public class MainService implements IRFIDController {
     return tags;
   }
 
+  @Override
+  public void resetScan() {
+    tags = new ArrayList<TagDAO>();
+  }
+
   private void addUniqueTagsToList(List<TagDAO> newTags) {
     if (newTags != null) {
       for (TagDAO newTag : newTags) {

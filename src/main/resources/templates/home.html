@@ -60,6 +60,7 @@
     </div>
     <button onclick="startScanning()">Start scan</button>
     <button onclick="stopScanning()">Stop scan</button>
+    <button onclick="resetScan()">Reset scan</button>
     <div id="tags"></div>
   </body>
 </body>
@@ -69,7 +70,7 @@
 
   $(document).ready(function () {
     gettags();
-    setInterval(gettags, 2000);
+    setInterval(gettags, 1000);
   });
 
   function gettags() {
@@ -90,6 +91,10 @@
 
   function stopScanning() {
     fetch("/api/stopscan");
+  }
+
+  function resetScan() {
+    fetch("/api/resetscan");
   }
 </script>
 
