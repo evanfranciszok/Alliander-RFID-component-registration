@@ -17,7 +17,7 @@ public class ScanMocker implements IScanner {
     RFIDs.add(new BigInteger("973625604588042833742748698310134"));
     RFIDs.add(new BigInteger("973625604588042834024356298916676"));
     RFIDs.add(new BigInteger("973625604588042834025335804189546"));
-    return null;
+    return RFIDs;
   }
 
   @Override
