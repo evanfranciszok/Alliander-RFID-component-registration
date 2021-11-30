@@ -18,15 +18,27 @@ public class SQLiteDB implements ITagDatabase {
     TagDAO tag = null;
     try {
       makeConnection();
-      ResultSet resultSet = executeQuery("select * from TAGS where id is " + id);
+      System.out.println("query = " + "select * from Component where RFID is '" + id + "'");
+      ResultSet resultSet = executeQuery("select * from Component where RFID is '" + id + "'");
       if (resultSet.next()) {
         String date = null;
-        if (resultSet.getString("DATE_OF_INSTALLMENT") != null) {
-          Date d = new Date((long) Integer.parseInt(resultSet.getString("DATE_OF_INSTALLMENT")) * 1000);
+        if (resultSet.getString("DateOfInstallment") != null) {
+          Date d = new Date((long) Integer.parseInt(resultSet.getString("DateOfInstallment")) * 1000);
           date = d.toString();
         }
-        tag = new TagDAO(resultSet.getBigDecimal("ID").toBigInteger(), resultSet.getString("SUPPLIER"),
-            resultSet.getString("NAME"), date);
+        String prodDate = null;
+        if (resultSet.getString("ProductionDate") != null) {
+          Date d = new Date((long) Integer.parseInt(resultSet.getString("ProductionDate")) * 1000);
+          prodDate = d.toString();
+        }
+        String comment = "";
+        if (resultSet.getString("Comment") != null) {
+          comment = resultSet.getString("Comment");
+        }
+
+        tag = new TagDAO(resultSet.getInt("ID"), resultSet.getString("SerialNumber"),
+            resultSet.getString("Supplier"), resultSet.getString("Name"), prodDate, date,
+            comment);
       }
 
     } catch (Exception e) {
@@ -41,15 +53,25 @@ public class SQLiteDB implements ITagDatabase {
     List<TagDAO> tags = new ArrayList<TagDAO>();
     try {
       makeConnection();
-      ResultSet resultSet = executeQuery("SELECT * FROM TAGS;");
+      ResultSet resultSet = executeQuery("SELECT * FROM Component;");
       while (resultSet.next()) {
         String date = null;
-        if (resultSet.getString("DATE_OF_INSTALLMENT") != null) {
-          Date d = new Date((long) Integer.parseInt(resultSet.getString("DATE_OF_INSTALLMENT")) * 1000);
+        if (resultSet.getString("DateOfInstallment") != null) {
+          Date d = new Date((long) Integer.parseInt(resultSet.getString("DateOfInstallment")) * 1000);
           date = d.toString();
         }
-        tags.add(new TagDAO(resultSet.getBigDecimal("ID").toBigInteger(), resultSet.getString("SUPPLIER"),
-            resultSet.getString("NAME"), date));
+        String prodDate = null;
+        if (resultSet.getString("ProductionDate") != null) {
+          Date d = new Date((long) Integer.parseInt(resultSet.getString("ProductionDate")) * 1000);
+          prodDate = d.toString();
+        }
+        String comment = null;
+        if (resultSet.getString("Comment") != null) {
+          comment = resultSet.getString("Comment");
+        }
+        tags.add(new TagDAO(resultSet.getInt("ID"), resultSet.getString("SerialNumber"),
+            resultSet.getString("Supplier"), resultSet.getString("Name"), prodDate, date,
+            comment));
       }
       resultSet.close();
       closeConnection();

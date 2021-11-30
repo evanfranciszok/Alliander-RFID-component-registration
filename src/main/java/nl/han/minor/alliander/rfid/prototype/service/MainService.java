@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
-import nl.han.minor.alliander.rfid.prototype.persistence.PFScanner;
+import nl.han.minor.alliander.rfid.prototype.persistence.ScanMocker;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.TagDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IScanner;
 
@@ -23,7 +23,7 @@ public class MainService implements IRFIDController {
   public MainService() {
     if (scanner == null) { // check if already initialized
       scanStarted = false;
-      scanner = new PFScanner();
+      scanner = new ScanMocker();
       connector = new TagConnector(scanner);
     }
   }
@@ -61,12 +61,17 @@ public class MainService implements IRFIDController {
     return tags;
   }
 
+  @Override
+  public void resetScan() {
+    tags = new ArrayList<TagDAO>();
+  }
+
   private void addUniqueTagsToList(List<TagDAO> newTags) {
     if (newTags != null) {
       for (TagDAO newTag : newTags) {
         boolean isInList = false;
         for (TagDAO tag : tags) {
-          if (tag.getId().equals(newTag.getId())) {
+          if (tag.getId() == newTag.getId()) {
             isInList = true;
             break;
           }

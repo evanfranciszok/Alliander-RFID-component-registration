@@ -33,6 +33,12 @@ public class IndexController {
     return new ResponseEntity<>("scan started", HttpStatus.OK);
   }
 
+  @GetMapping("/api/resetscan")
+  public ResponseEntity<String> resetScan() {
+    rfid.resetScan();
+    return new ResponseEntity<>("scan started", HttpStatus.OK);
+  }
+
   @GetMapping("/api/gettagsfromscan")
   public String getTagsFromScan(Model model) {
     model.addAttribute("tags", rfid.getTagsFromScan());
