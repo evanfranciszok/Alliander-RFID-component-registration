@@ -6,7 +6,7 @@ import java.util.List;
 
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IScanner;
 
-public class scanMocker implements IScanner {
+public class ScanMocker implements IScanner {
 
   @Override
   public List<BigInteger> scanTags() {
