@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class TagDAO implements Serializable {
 
-  public TagDAO(int id, String sn, String sup, String nam, String prodDate, String dOI, String com) {
+  public TagDAO(int id, String sn, String sup, String nam, String prodDate, String dOI, String com,
+      SpecificationDAO spec) {
     this.id = id;
     this.serialNumber = sn;
     this.supplier = sup;
@@ -12,6 +13,7 @@ public class TagDAO implements Serializable {
     this.productionDate = prodDate;
     this.dateOfInstallment = dOI;
     this.comment = com;
+    this.specification = spec;
   }
 
   private int id;
@@ -21,6 +23,7 @@ public class TagDAO implements Serializable {
   private String productionDate;
   private String dateOfInstallment;
   private String comment;
+  private SpecificationDAO specification;
 
   public String getSupplier() {
     return supplier;
@@ -76,6 +79,14 @@ public class TagDAO implements Serializable {
 
   public void setComment(String comment) {
     this.comment = comment;
+  }
+
+  public SpecificationDAO getSpecification() {
+    return specification;
+  }
+
+  public void setSpecification(SpecificationDAO specification) {
+    this.specification = specification;
   }
 
   @Override
