@@ -8,21 +8,22 @@
   <!-- <link rel="stylesheet" th:href="@{/style/style.css}"> -->
   <title>RFID registration</title>
   <style>
-    p {
-      color: red;
-    }
-
     .component {
       background-color: darkgray;
-      width: fit-content;
-      min-width: 500px;
+      width: 800px;
       margin: auto;
       margin-bottom: 10px;
       padding: 10px;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: start;
       border-radius: 10px;
+    }
+
+    .mainValues {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
     }
 
     .value {
@@ -33,6 +34,36 @@
       font-size: large;
       font-weight: bold;
       margin-right: 10px;
+      display: flex;
+    }
+
+    .value>p:first-child,
+    .specification>*>p:first-child {
+      color: lightgray;
+      margin-right: 4px;
+    }
+
+    .specification {
+      background: lightgray;
+      border-radius: 5px;
+      padding: 3px;
+      margin-top: 10px;
+      display: flex;
+    }
+
+    .specification>* {
+      display: flex;
+      flex-direction: row;
+      background-color: darkgray;
+      border-radius: 2px;
+      /* margin: 0px; */
+      width: fit-content;
+      padding: 5px;
+      margin: 5px;
+    }
+
+    .component p {
+      margin: 0;
     }
 
     .value:last-child {

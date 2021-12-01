@@ -1,13 +1,13 @@
 package nl.han.minor.alliander.rfid.prototype.persistence.DAOs;
 
 public abstract class SpecificationDAO {
-  public String specificationType;
+  public String type;
 
   public SpecificationDAO(String typeName) {
-    this.specificationType = typeName;
+    this.type = typeName;
   }
 
-  public String getSpecificationType() {
-    return this.specificationType;
+  public String getType() {
+    return type;
   }
 }

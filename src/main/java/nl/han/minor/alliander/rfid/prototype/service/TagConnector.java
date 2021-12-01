@@ -24,11 +24,6 @@ public class TagConnector implements IInfoConnector {
     List<TagDAO> tags = new ArrayList<TagDAO>();
     for (BigInteger id : ids) {
       tags.add(database.getTagsFromID(id));
-      // System.out.println(id + " ###");
-      // TagDAO tag = database.getTagsFromID(id);
-      System.out.println("Tag with id: [" + id + "] returns from database as: " + database.getTagsFromID(id));
-      // if (tag != null)
-      // tags.add(tag);
     }
     return tags;
   }

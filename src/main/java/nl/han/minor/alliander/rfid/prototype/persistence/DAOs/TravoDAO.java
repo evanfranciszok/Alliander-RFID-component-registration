@@ -8,48 +8,33 @@ public class TravoDAO extends SpecificationDAO {
   private int weight;
   private String coolingType;
 
-  public TravoDAO() {
+  public TravoDAO(int kva, int fase, int hz, int weight, String cooling) {
     super("Travo");
+    this.KVA = kva;
+    this.fase = fase;
+    this.Hz = hz;
+    this.weight = weight;
+    this.coolingType = cooling;
   }
 
   public int getKVA() {
     return KVA;
   }
 
-  public void setKVA(int kVA) {
-    KVA = kVA;
-  }
-
   public int getFase() {
     return fase;
-  }
-
-  public void setFase(int fase) {
-    this.fase = fase;
   }
 
   public int getHz() {
     return Hz;
   }
 
-  public void setHz(int hz) {
-    Hz = hz;
-  }
-
   public int getWeight() {
     return weight;
   }
 
-  public void setWeight(int weight) {
-    this.weight = weight;
-  }
-
   public String getCoolingType() {
     return coolingType;
-  }
-
-  public void setCoolingType(String coolingType) {
-    this.coolingType = coolingType;
   }
 
 }
