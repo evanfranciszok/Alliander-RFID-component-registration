@@ -28,6 +28,7 @@ public class TagConnector implements IInfoConnector {
       ComponentDAO com = new ComponentDAO(1234567, id.getId(), "String sup", "String nam", "String prodDate",
           "String dOI", "String com",
           null);
+      com.setRSSI(id.getRSSI());
       components.add(com);
     }
     return components;
