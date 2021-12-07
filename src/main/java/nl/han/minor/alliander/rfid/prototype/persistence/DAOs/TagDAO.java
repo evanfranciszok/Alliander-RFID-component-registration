@@ -32,4 +32,9 @@ public class TagDAO {
   public void setData(String data) {
     this.data = data;
   }
+
+  @Override
+  public String toString() {
+    return "TagDAO [RSSI=" + RSSI + ", data=" + data + ", id=" + id + "]";
+  }
 }

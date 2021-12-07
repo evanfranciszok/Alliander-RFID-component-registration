@@ -1,6 +1,5 @@
 package nl.han.minor.alliander.rfid.prototype.service;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -25,7 +24,7 @@ public class MainService implements IRFIDController {
   public MainService() {
     if (scanner == null) { // check if already initialized
       scanStarted = false;
-      scanner = new ScanMocker(); // PFScanner();
+      scanner = new PFScanner(); // ScanMocker();
       connector = new TagConnector(scanner);
     }
   }
@@ -35,6 +34,7 @@ public class MainService implements IRFIDController {
     if (scanStarted) {
       List<TagDAO> tags = scanner.scanTags();
       if (tags.size() > 0) {
+        System.out.println("more than 0 tags!!");
         addUniqueComponentsToList(connector.getScannedComponents(tags));
       }
     }
@@ -69,6 +69,7 @@ public class MainService implements IRFIDController {
   }
 
   private void addUniqueComponentsToList(List<ComponentDAO> newTags) {
+    System.out.println("new tags : " + newTags);
     if (newTags != null) {
       for (ComponentDAO newTag : newTags) {
         boolean isInList = false;
@@ -79,6 +80,7 @@ public class MainService implements IRFIDController {
           }
         }
         if (!isInList) {
+          System.out.println("adding " + newTag + " to list");
           tags.add(newTag);
         }
       }

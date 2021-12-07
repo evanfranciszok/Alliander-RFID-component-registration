@@ -47,16 +47,17 @@ public class PFScanner implements IScanner {
               tag.setData((String) ((JSONObject) o).get("data"));
             }
             if (((JSONObject) o).containsKey("RSSI")) {
-              tag.setRSSI((int) ((JSONObject) o).get("RSSI"));
+              Long rssi = (long) ((JSONObject) o).get("RSSI");
+              tag.setRSSI(rssi.intValue());
             }
-            // add(new BigInteger((String) ((JSONObject) o).get("UII"), 16));
+            tags.add(tag);
+            // tags.add(new BigInteger((String) ((JSONObject) o).get("UII"), 16));
           }
         }
       }
     } catch (Exception e) {
       System.err.println(e);
     }
-
     return tags;
   }
 

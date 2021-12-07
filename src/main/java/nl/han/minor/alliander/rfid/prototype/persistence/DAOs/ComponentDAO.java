@@ -4,6 +4,16 @@ import java.io.Serializable;
 
 public class ComponentDAO implements Serializable {
 
+  private int id;
+  private String serialNumber;
+  private String supplier;
+  private String name;
+  private String productionDate;
+  private String dateOfInstallment;
+  private String comment;
+  private SpecificationDAO specification;
+  private int rSSI;
+
   public ComponentDAO(int id, String sn, String sup, String nam, String prodDate, String dOI, String com,
       SpecificationDAO spec) {
     this.id = id;
@@ -16,14 +26,13 @@ public class ComponentDAO implements Serializable {
     this.specification = spec;
   }
 
-  private int id;
-  private String serialNumber;
-  private String supplier;
-  private String name;
-  private String productionDate;
-  private String dateOfInstallment;
-  private String comment;
-  private SpecificationDAO specification;
+  public int getRSSI() {
+    return rSSI;
+  }
+
+  public void setRSSI(int rSSI) {
+    this.rSSI = rSSI;
+  }
 
   public String getSupplier() {
     return supplier;
