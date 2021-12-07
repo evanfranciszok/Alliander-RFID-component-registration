@@ -49,4 +49,10 @@ public class IndexController {
   public String makelist(Model model) {
     return "list";
   }
+
+  @GetMapping("/api/gettags")
+  public String getTags(Model model) {
+    model.addAttribute("tags", rfid.getTagsFromScan());
+    return "tags2";
+  }
 }

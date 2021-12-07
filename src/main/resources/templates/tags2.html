@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gettags</title>
+
+    <style>
+        /* tabel*/
+        /* uitvouw knop*/
+        .accordion__button {
+            /*display: block;
+      /*width: 100%;
+      /*padding: 15px;*/
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background: inherit;
+            color: #707070;
+            text-align: left;
+            transition: 0.2s;
+            height: 12px;
+        }
+
+        .accordion__button::after {
+            content: '\25be';
+            float: right;
+            transform: scale(1.5);
+        }
+
+        .accordion__button--active {
+            background: inherit;
+        }
+
+        .accordion__button--active::after {
+            content: '\25b4';
+        }
+
+        .accordion__content {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.2s;
+            padding: 0 0px 0 15px;
+            font-family: sans-serif;
+            /* background: #ffffff; */
+        }
+
+        /* tabel opmaak*/
+        .tabel {
+            font-family: sans-serif;
+            flex-direction: row;
+        }
+
+        .row {
+            display: flex;
+            /* background-color: white; */
+            padding: 0;
+        }
+
+        .backgroundBlockRow {
+            display: flex;
+            background-color: white;
+            padding: 0;
+        }
+
+        .row:hover {
+            background-color: #B9B5B5;
+        }
+
+        .tabel .head {
+
+            /* background-color: white */
+            /*#B9B5B5*/
+            font-weight: bold;
+
+            width: 200px;
+            margin: 4px 0 4px 0;
+            border-right: 2px solid #707070;
+            /* border-bottom: 1px solid #707070; */
+            /* border-top: 1px solid #707070; */
+            border-collapse: collapse;
+            padding: 1px 0px 1px 20px;
+        }
+
+        .tabel .data {
+            /* background-color: white; */
+            /*background-color: #B9B5B5;*/
+
+            width: 200px;
+            margin: 4px 0 4px 0;
+            border-right: 2px solid #707070;
+            border-collapse: collapse;
+            padding: 1px 0px 1px 20px;
+        }
+
+        .tabel .data1 {
+            /* background-color: white; */
+            /*background-color: #D6D1D1;*/
+
+            width: 200px;
+            margin: 4px 0 4px 0;
+            border-right: 2px solid #707070;
+            border-collapse: collapse;
+            padding: 1px 0px 1px 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tabel" th:each="tag: ${tags}">
+        <div class="row">
+            <Div class="data" th:text="${tag.name}">Component</Div>
+            <Div class="data" th:text="${tag.serialNumber}">Artikelnummer</Div>
+            <Div class="data" th:text="${tag.productionDate}">Productie datum</Div>
+            <Div class="data" th:if="${tag.dateOfInstallment != null}" th:text="${tag.dateOfInstallment}"></Div>
+            <Div class="data" th:unless="${tag.dateOfInstallment != null}" th:text="onbekend"></Div>
+            <Div class="data" th:text="${tag.supplier}">Leverancier</Div>
+            <button type="button" class="accordion__button"></button>
+        </div>
+        <div class="noRow" id="theclass">
+            <div class="accordion__content">
+                <div class="row">
+                    <Div class="data">extra info</Div>
+                    <Div class="data" th:text="${tag.comment}">comment</Div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    document.querySelectorAll('.accordion__button').forEach(button => {
+        button.addEventListener('click', () => {
+            const accordionContent = button.parentElement.nextElementSibling.children[0];
+
+            button.classList.toggle('accordion__button--active');
+
+            if (button.classList.contains('accordion__button--active')) {
+                accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+            } else {
+                accordionContent.style.maxHeight = 0;
+            }
+        })
+    })
+</script>
+
+</html>

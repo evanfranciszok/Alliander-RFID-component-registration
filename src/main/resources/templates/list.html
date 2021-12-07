@@ -271,10 +271,13 @@
       <Div class="head">Installatie datum</Div>
       <Div class="head">Leverancier</Div>
     </div>
-
   </div>
+  
   <!-- inhoud -->
-  <div class="tabel">
+  <div id="resultaat"></div>
+
+
+  <!-- <div class="tabel">
     <div class="row">
       <Div class="data">Component</Div>
       <Div class="data">Artikelnummer</Div>
@@ -296,31 +299,7 @@
       </div>
     </div>
 
-  </div>
-  <!-- inhoud -->
-  <div class="tabel">
-    <div class="row">
-      <Div class="data">Component</Div>
-      <Div class="data">Artikelnummer</Div>
-      <Div class="data">Productie datum</Div>
-      <Div class="data">Installatie datum</Div>
-      <Div class="data">Leverancier</Div>
-      <button type="button" class="accordion__button"></button>
-    </div>
-    <div class="noRow" id="theclass">
-      <div class="accordion__content">
-        <div class="row">
-          <Div class="data">Component</Div>
-          <Div class="data">Artikelnummer</Div>
-        </div>
-        <div class="row">
-          <Div class="data">Component</Div>
-          <Div class="data">Artikelnummer</Div>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  </div> -->
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -356,6 +335,25 @@
         button.style.background = "#ff0000";
         loadergif.style.display = "block";
       }
+    }
+
+    var prevHTML = '';
+
+    $(document).ready(function () {
+      gettags();
+      setInterval(gettags, 1000);
+    });
+
+    function gettags() {
+      $.ajax({
+        url: "api/gettags", success: function (result) {
+          if (prevHTML != result) {
+            $("#resultaat").html(result);
+            prevHTML = result;
+            // console.log("update");
+          }
+        }
+      });
     }
 
   </script>
