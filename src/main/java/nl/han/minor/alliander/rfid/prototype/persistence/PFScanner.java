@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,10 @@ public class PFScanner implements IScanner {
         }
       }
     } catch (Exception e) {
+      if (org.json.simple.parser.ParseException.class.toString().equals(e.getClass().toString())) {
+        bearerToken = null;
+        System.out.println("Account deactivated as it was no longer avaiable");
+      }
       System.err.println(e);
     }
     return tags;
