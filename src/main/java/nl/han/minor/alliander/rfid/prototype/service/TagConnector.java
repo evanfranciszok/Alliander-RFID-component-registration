@@ -6,6 +6,7 @@ import java.util.List;
 
 import nl.han.minor.alliander.rfid.prototype.persistence.SQLiteDB;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
+import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.TagDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IScanner;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IComponentDatabase;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
@@ -20,11 +21,11 @@ public class TagConnector implements IInfoConnector {
     this.scanner = scanner;
   }
 
-  public List<ComponentDAO> getScannedComponents(List<BigInteger> ids) {
-    List<ComponentDAO> tags = new ArrayList<ComponentDAO>();
-    for (BigInteger id : ids) {
-      tags.add(database.getComponentFromID(id));
+  public List<ComponentDAO> getScannedComponents(List<TagDAO> ids) {
+    List<ComponentDAO> components = new ArrayList<ComponentDAO>();
+    for (TagDAO id : ids) {
+      components.add(database.getComponentFromID(id.getId()));
     }
-    return tags;
+    return components;
   }
 }

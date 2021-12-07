@@ -17,7 +17,7 @@ public class SQLiteDB implements IComponentDatabase {
   private static Statement stmt = null;
 
   @Override
-  public ComponentDAO getComponentFromID(BigInteger rfid) {
+  public ComponentDAO getComponentFromID(String rfid) {
     ComponentDAO component = null;
     try {
       makeConnection();

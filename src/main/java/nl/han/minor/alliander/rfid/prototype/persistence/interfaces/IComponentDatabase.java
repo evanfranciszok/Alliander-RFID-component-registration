@@ -8,5 +8,5 @@ import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
 public interface IComponentDatabase {
   public List<ComponentDAO> getAllComponents();
 
-  public ComponentDAO getComponentFromID(BigInteger id);
+  public ComponentDAO getComponentFromID(String id);
 }

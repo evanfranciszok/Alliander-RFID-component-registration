@@ -14,6 +14,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.TagDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IScanner;
 
 //https://openjdk.java.net/groups/net/httpclient/intro.html
@@ -30,18 +31,25 @@ public class PFScanner implements IScanner {
   private boolean setContinous = false;
 
   @Override
-  public List<BigInteger> scanTags() {
-    List<BigInteger> tagIDs = new ArrayList<>();
+  public List<TagDAO> scanTags() {
+    List<TagDAO> tags = new ArrayList<>();
     try {
       if (!setContinous) {
         setContinous();
         setContinous = true;
       }
-      JSONArray tags = readDataContinous();
-      for (Object o : tags) {
+      JSONArray rawTagData = readDataContinous();
+      for (Object o : rawTagData) {
         if (o instanceof JSONObject) {
           if (((JSONObject) o).containsKey("UII")) {
-            tagIDs.add(new BigInteger((String) ((JSONObject) o).get("UII"), 16));
+            TagDAO tag = new TagDAO((String) ((JSONObject) o).get("UII"));
+            if (((JSONObject) o).containsKey("data")) {
+              tag.setData((String) ((JSONObject) o).get("data"));
+            }
+            if (((JSONObject) o).containsKey("RSSI")) {
+              tag.setRSSI((int) ((JSONObject) o).get("RSSI"));
+            }
+            // add(new BigInteger((String) ((JSONObject) o).get("UII"), 16));
           }
         }
       }
@@ -49,7 +57,7 @@ public class PFScanner implements IScanner {
       System.err.println(e);
     }
 
-    return tagIDs;
+    return tags;
   }
 
   @Override

@@ -12,6 +12,7 @@ import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
 import nl.han.minor.alliander.rfid.prototype.persistence.PFScanner;
 import nl.han.minor.alliander.rfid.prototype.persistence.ScanMocker;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
+import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.TagDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IScanner;
 
 @Component
@@ -32,9 +33,9 @@ public class MainService implements IRFIDController {
   @Scheduled(fixedRate = 500)
   private void mainController() {
     if (scanStarted) {
-      List<BigInteger> ids = scanner.scanTags();
-      if (ids.size() > 0) {
-        addUniqueComponentsToList(connector.getScannedComponents(ids));
+      List<TagDAO> tags = scanner.scanTags();
+      if (tags.size() > 0) {
+        addUniqueComponentsToList(connector.getScannedComponents(tags));
       }
     }
   }
