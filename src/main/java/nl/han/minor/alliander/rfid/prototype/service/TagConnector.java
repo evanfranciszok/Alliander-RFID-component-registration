@@ -14,6 +14,7 @@ public class TagConnector implements IInfoConnector {
 
   private IScanner scanner;
   private IComponentDatabase database;
+  private int tagnr;
 
   public TagConnector(IScanner scanner) {
     database = new SQLiteDB();
@@ -25,9 +26,10 @@ public class TagConnector implements IInfoConnector {
     for (TagDAO id : ids) {
       // ComponentDAO com = database.getComponentFromID(id.getId());
       // com.setRSSI(id.getRSSI());
-      ComponentDAO com = new ComponentDAO(1234567, id.getId(), "String sup", "String nam", "String prodDate",
+      ComponentDAO com = new ComponentDAO(tagnr, id.getId(), "String sup", "" + id.getId(), "String prodDate",
           "String dOI", "String com",
           null);
+      tagnr++;
       com.setRSSI(id.getRSSI());
       components.add(com);
     }
