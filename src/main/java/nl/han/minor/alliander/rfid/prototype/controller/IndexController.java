@@ -39,10 +39,10 @@ public class IndexController {
     return new ResponseEntity<>("scan started", HttpStatus.OK);
   }
 
-  @GetMapping("/api/gettagsfromscan")
-  public String getTagsFromScan(Model model) {
-    model.addAttribute("tags", rfid.getTagsFromScan());
-    return "tags";
+  @GetMapping("/api/getcomponentsfromscan")
+  public String getComponentsFromScan(Model model) {
+    model.addAttribute("components", rfid.getComponentsFromScan());
+    return "components";
   }
 
   @GetMapping("/list")
