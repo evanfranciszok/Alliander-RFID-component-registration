@@ -7,18 +7,18 @@ import javax.management.Query;
 
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.SpecificationDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.*;
-import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.ITagDatabase;
+import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IComponentDatabase;
 
 import java.math.BigInteger;
 import java.sql.*;
 
-public class SQLiteDB implements ITagDatabase {
+public class SQLiteDB implements IComponentDatabase {
   private static Connection connection = null;
   private static Statement stmt = null;
 
   @Override
-  public TagDAO getTagsFromID(BigInteger rfid) {
-    TagDAO tag = null;
+  public ComponentDAO getComponentFromID(BigInteger rfid) {
+    ComponentDAO component = null;
     try {
       makeConnection();
       // String query = "select * from Component where RFID is '" + id + "'";
@@ -36,19 +36,19 @@ public class SQLiteDB implements ITagDatabase {
         String comment = checkString(resultSet.getString("Comment"), false);
         SpecificationDAO specification = creatSpecificationDAO(id, checkString(resultSet.getString("TypeName"), false));
 
-        tag = new TagDAO(id, serNr, sup, name, prodDate, date, comment, specification);
+        component = new ComponentDAO(id, serNr, sup, name, prodDate, date, comment, specification);
       }
 
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
       System.exit(0);
     }
-    return tag;
+    return component;
   }
 
   @Override
-  public List<TagDAO> getAllTags() {
-    List<TagDAO> tags = new ArrayList<TagDAO>();
+  public List<ComponentDAO> getAllComponents() {
+    List<ComponentDAO> components = new ArrayList<ComponentDAO>();
     try {
       makeConnection();
       ResultSet resultSet = executeQuery("SELECT * FROM Component;");
@@ -58,7 +58,7 @@ public class SQLiteDB implements ITagDatabase {
         String prodDate = checkString(resultSet.getString("ProductionDate"), true);
         String comment = checkString(resultSet.getString("Comment"), false);
 
-        tags.add(new TagDAO(resultSet.getInt("ID"), resultSet.getString("SerialNumber"),
+        components.add(new ComponentDAO(resultSet.getInt("ID"), resultSet.getString("SerialNumber"),
             resultSet.getString("Supplier"), resultSet.getString("Name"), prodDate, date,
             comment, null));
       }
@@ -68,7 +68,7 @@ public class SQLiteDB implements ITagDatabase {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
       System.exit(0);
     }
-    return tags;
+    return components;
   }
 
   private void makeConnection() throws SQLException {

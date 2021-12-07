@@ -92,7 +92,7 @@
     <button onclick="startScanning()">Start scan</button>
     <button onclick="stopScanning()">Stop scan</button>
     <button onclick="resetScan()">Reset scan</button>
-    <div id="tags"></div>
+    <div id="components"></div>
   </body>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -100,15 +100,15 @@
   var prevHTML = '';
 
   $(document).ready(function () {
-    gettags();
-    setInterval(gettags, 1000);
+    getcomponents();
+    setInterval(getcomponents, 1000);
   });
 
-  function gettags() {
+  function getcomponents() {
     $.ajax({
-      url: "api/gettagsfromscan", success: function (result) {
+      url: "api/getcomponentsfromscan", success: function (result) {
         if (prevHTML != result) {
-          $("#tags").html(result);
+          $("#components").html(result);
           prevHTML = result;
           console.log("update");
         }

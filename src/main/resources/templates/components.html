@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>components</title>
+</head>
+
+<body>
+  <div class="component" th:each="component: ${components}">
+    <div class="mainValues">
+      <div class="value">
+        <p>id: </p>
+        <p th:text="${component.id}"></p>
+      </div>
+      <div class="value">
+        <p>name: </p>
+        <p th:text="${component.name}"></p>
+      </div>
+      <div class="value">
+        <p>supplier: </p>
+        <p th:text="${component.supplier}"></p>
+      </div>
+      <div class="value" th:if="${component.dateOfInstallment != null}">
+        <p>install date: </p>
+        <p th:text="${component.dateOfInstallment}"></p>
+      </div>
+    </div>
+    <div class="specification" th:if="${component.specification != null && component.specification.type == 'Travo'}">
+      <div th:if="${component.specification.KVA != null}">
+        <p>kva:</p>
+        <p th:text="${component.specification.KVA}"></p>
+      </div>
+      <div th:if="${component.specification.fase != null}">
+        <p>fase:</p>
+        <p th:text="${component.specification.fase}"></p>
+      </div>
+      <div th:if="${component.specification.Hz != null}">
+        <p>Hz:</p>
+        <p th:text="${component.specification.Hz}"></p>
+      </div>
+      <div th:if="${component.specification.weight != null}">
+        <p>weight:</p>
+        <p th:text="${component.specification.weight}"></p>
+      </div>
+      <div th:if="${component.specification.coolingType != null}">
+        <p>coolingType:</p>
+        <p th:text="${component.specification.coolingType}"></p>
+      </div>
+    </div>
+    <div class="specification" th:if="${component.specification != null && component.specification.type == 'Fuse'}">
+      <div th:if="${component.specification.VA != null}">
+        <p>VA:</p>
+        <p th:text="${component.specification.VA}"></p>
+      </div>
+      <div th:if="${component.specification.volt != null}">
+        <p>Volt:</p>
+        <p th:text="${component.specification.volt}"></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

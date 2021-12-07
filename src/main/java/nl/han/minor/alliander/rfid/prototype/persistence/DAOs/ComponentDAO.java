@@ -2,9 +2,9 @@ package nl.han.minor.alliander.rfid.prototype.persistence.DAOs;
 
 import java.io.Serializable;
 
-public class TagDAO implements Serializable {
+public class ComponentDAO implements Serializable {
 
-  public TagDAO(int id, String sn, String sup, String nam, String prodDate, String dOI, String com,
+  public ComponentDAO(int id, String sn, String sup, String nam, String prodDate, String dOI, String com,
       SpecificationDAO spec) {
     this.id = id;
     this.serialNumber = sn;
