@@ -3,13 +3,9 @@ package nl.han.minor.alliander.rfid.prototype.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.Query;
-
-import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.SpecificationDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.*;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IComponentDatabase;
 
-import java.math.BigInteger;
 import java.sql.*;
 
 public class SQLiteDB implements IComponentDatabase {
