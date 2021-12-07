@@ -52,7 +52,7 @@ public class IndexController {
 
   @GetMapping("/api/gettags")
   public String getTags(Model model) {
-    model.addAttribute("tags", rfid.getTagsFromScan());
+    model.addAttribute("tags", rfid.getComponentsFromScan());
     return "tags2";
   }
 }
