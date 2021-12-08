@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
 import nl.han.minor.alliander.rfid.prototype.persistence.PFScanner;
+import nl.han.minor.alliander.rfid.prototype.persistence.SQLiteDB;
 import nl.han.minor.alliander.rfid.prototype.persistence.ScanMocker;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.TagDAO;
+import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IComponentDatabase;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IScanner;
 
 @Component
@@ -19,13 +21,15 @@ public class MainService implements IRFIDController {
   private static boolean scanStarted;
   private static IInfoConnector connector;
   private static IScanner scanner;
+  private static IComponentDatabase database;
   private static List<ComponentDAO> tags = new ArrayList<ComponentDAO>();
 
   public MainService() {
     if (scanner == null) { // check if already initialized
-      scanStarted = false;
-      scanner = new PFScanner(); // ScanMocker();
-      connector = new TagConnector(scanner);
+      this.scanStarted = false;
+      this.scanner = new PFScanner(); // ScanMocker();
+      this.database = new SQLiteDB();
+      this.connector = new TagConnector(scanner, database);
     }
   }
 
@@ -85,5 +89,15 @@ public class MainService implements IRFIDController {
         }
       }
     }
+  }
+
+  @Override
+  public ComponentDAO getComponent(String id) {
+    return database.getComponentFromRFID(id);
+  }
+
+  @Override
+  public boolean addOrUpdateComponent(ComponentDAO com) {
+    return database.addOrUpdateComponent(com);
   }
 }

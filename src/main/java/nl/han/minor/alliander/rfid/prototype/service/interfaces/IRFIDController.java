@@ -13,10 +13,10 @@ public interface IRFIDController {
   public void stopScan();
 
   public List<ComponentDAO> getComponentsFromScan();
-  // ophalen verschil
-  // setten van msr ID
-  // ophalen van msr ID's
-  // ophalen bekende gegevens van MSR
 
   public void resetScan();
+
+  public ComponentDAO getComponent(String id);
+
+  public boolean addOrUpdateComponent(ComponentDAO com);
 }

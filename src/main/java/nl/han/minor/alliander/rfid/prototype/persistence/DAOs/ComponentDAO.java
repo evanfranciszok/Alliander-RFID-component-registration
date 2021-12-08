@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class ComponentDAO implements Serializable {
 
   private int id;
+  private String rFID;
   private String serialNumber;
   private String supplier;
   private String name;
@@ -14,9 +15,10 @@ public class ComponentDAO implements Serializable {
   private SpecificationDAO specification;
   private int rSSI;
 
-  public ComponentDAO(int id, String sn, String sup, String nam, String prodDate, String dOI, String com,
+  public ComponentDAO(int id, String rFID, String sn, String sup, String nam, String prodDate, String dOI, String com,
       SpecificationDAO spec) {
     this.id = id;
+    this.rFID = rFID;
     this.serialNumber = sn;
     this.supplier = sup;
     this.name = nam;
@@ -100,6 +102,16 @@ public class ComponentDAO implements Serializable {
 
   @Override
   public String toString() {
-    return "TagDAO [id=" + id + ", name=" + name + "]";
+    return "ComponentDAO [comment=" + comment + ", dateOfInstallment=" + dateOfInstallment + ", id=" + id + ", name="
+        + name + ", productionDate=" + productionDate + ", rSSI=" + rSSI + ", serialNumber=" + serialNumber
+        + ", specification=" + specification + ", supplier=" + supplier + "]";
+  }
+
+  public String getrFID() {
+    return rFID;
+  }
+
+  public void setrFID(String rFID) {
+    this.rFID = rFID;
   }
 }

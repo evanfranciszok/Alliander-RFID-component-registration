@@ -6,7 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
 import nl.han.minor.alliander.rfid.prototype.service.MainService;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
 
@@ -54,5 +58,20 @@ public class IndexController {
   public String getTags(Model model) {
     model.addAttribute("tags", rfid.getComponentsFromScan());
     return "tags2";
+  }
+
+  @GetMapping("/edit/{rfid}")
+  public String getEditComponent(Model model, @PathVariable("rfid") String rfid) {
+    model.addAttribute("component", this.rfid.getComponent(rfid));
+    return "editComponent";
+  }
+
+  @PostMapping("/edit/{rfid}")
+  public String editComponent(@ModelAttribute ComponentDAO com, Model model, @PathVariable("rfid") String rfid) {
+    // if (this.rfid.addOrUpdateComponent(com)) {
+    // model.addAttribute("succes", true);
+    // }
+    model.addAttribute("component", this.rfid.getComponent(rfid));
+    return "editComponent";
   }
 }

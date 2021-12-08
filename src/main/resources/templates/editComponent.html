@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>edit component</title>
+</head>
+
+<body>
+  <div th:if="${component != null}">
+    <div th:text="${component.name}"></div>
+    <form action="#" th:action="@{/edit/} + ${component.rFID}" th:object="${component}" method="post">
+      <p>id: <input type="text" th:field="*{id}" /></p>
+      <p>serialNumber: <input type="text" th:field="*{serialNumber}" /></p>
+      <p>supplier: <input type="text" th:field="*{supplier}" /></p>
+      <p>name: <input type="text" th:field="*{name}" /></p>
+      <p>productionDate: <input type="text" th:field="*{productionDate}" /></p>
+      <p>dateOfInstallment: <input type="text" th:field="*{dateOfInstallment}" /></p>
+      <p>comment: <input type="text" th:field="*{comment}" /></p>
+      <!-- Travo
+      <div th:if="${component.specification != null && component.specification.type == 'Travo'}">
+        <p>KVA: <input type="text" th:field="*{specification.KVA}" /></p>
+        <p>fase: <input type="text" th:field="*{specification.fase}" /></p>
+        <p>Hz: <input type="text" th:field="*{specification.Hz}" /></p>
+        <p>weight: <input type="text" th:field="*{specification.weight}" /></p>
+        <p>coolingType: <input type="text" th:field="*{specification.coolingType}" /></p>
+      </div>
+      Fuse
+      <div th:if="${component.specification != null && component.specification.type == 'Fuse'}">
+        <p>VA: <input type="text" th:field="*{specification.VA}" /></p>
+        <p>volt: <input type="text" th:field="*{specification.volt}" /></p>
+      </div> -->
+      <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+  </div>
+</body>
+
+</html>

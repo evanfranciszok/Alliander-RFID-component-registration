@@ -16,8 +16,8 @@ public class TagConnector implements IInfoConnector {
   private IComponentDatabase database;
   private int tagnr;
 
-  public TagConnector(IScanner scanner) {
-    database = new SQLiteDB();
+  public TagConnector(IScanner scanner, IComponentDatabase db) {
+    database = db;
     this.scanner = scanner;
   }
 

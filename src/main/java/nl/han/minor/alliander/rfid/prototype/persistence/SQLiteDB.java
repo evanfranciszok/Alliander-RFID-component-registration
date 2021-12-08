@@ -13,33 +13,17 @@ public class SQLiteDB implements IComponentDatabase {
   private static Statement stmt = null;
 
   @Override
-  public ComponentDAO getComponentFromID(String rfid) {
-    ComponentDAO component = null;
-    try {
-      makeConnection();
-      // String query = "select * from Component where RFID is '" + id + "'";
-      String query = "select Component.*, ComponentType.Name as TypeName from Component LEFT JOIN ComponentType on Component.Type = ComponentType.ID where Component.RFID is '"
-          + rfid + "'";
-      // System.out.println(query);
-      ResultSet resultSet = executeQuery(query);
-      if (resultSet.next()) {
-        int id = resultSet.getInt("ID");
-        String serNr = resultSet.getString("SerialNumber");
-        String sup = resultSet.getString("Supplier");
-        String name = resultSet.getString("name");
-        String date = checkString(resultSet.getString("DateOfInstallment"), true);
-        String prodDate = checkString(resultSet.getString("ProductionDate"), true);
-        String comment = checkString(resultSet.getString("Comment"), false);
-        SpecificationDAO specification = creatSpecificationDAO(id, checkString(resultSet.getString("TypeName"), false));
+  public ComponentDAO getComponentFromRFID(String rfid) {
+    String query = "select Component.*, ComponentType.Name as TypeName from Component LEFT JOIN ComponentType on Component.Type = ComponentType.ID where Component.RFID is '"
+        + rfid + "'";
+    return getSingleComponent(query);
+  }
 
-        component = new ComponentDAO(id, serNr, sup, name, prodDate, date, comment, specification);
-      }
-
-    } catch (Exception e) {
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-      System.exit(0);
-    }
-    return component;
+  @Override
+  public ComponentDAO getComponentFromID(String id) {
+    String query = "select Component.*, ComponentType.Name as TypeName from Component LEFT JOIN ComponentType on Component.Type = ComponentType.ID where Component.ID is '"
+        + id + "'";
+    return getSingleComponent(query);
   }
 
   @Override
@@ -54,9 +38,10 @@ public class SQLiteDB implements IComponentDatabase {
         String prodDate = checkString(resultSet.getString("ProductionDate"), true);
         String comment = checkString(resultSet.getString("Comment"), false);
 
-        components.add(new ComponentDAO(resultSet.getInt("ID"), resultSet.getString("SerialNumber"),
-            resultSet.getString("Supplier"), resultSet.getString("Name"), prodDate, date,
-            comment, null));
+        components.add(
+            new ComponentDAO(resultSet.getInt("ID"), resultSet.getString("RFID"), resultSet.getString("SerialNumber"),
+                resultSet.getString("Supplier"), resultSet.getString("Name"), prodDate, date,
+                comment, null));
       }
       resultSet.close();
       closeConnection();
@@ -65,6 +50,38 @@ public class SQLiteDB implements IComponentDatabase {
       System.exit(0);
     }
     return components;
+  }
+
+  @Override
+  public boolean addOrUpdateComponent(ComponentDAO com) {
+    System.out.println("Adding component: " + com);
+    return true;
+  }
+
+  private ComponentDAO getSingleComponent(String query) {
+    ComponentDAO component = null;
+    try {
+      makeConnection();
+      ResultSet resultSet = executeQuery(query);
+      if (resultSet.next()) {
+        int id = resultSet.getInt("ID");
+        String rfid = resultSet.getString("RFID");
+        String serNr = resultSet.getString("SerialNumber");
+        String sup = resultSet.getString("Supplier");
+        String name = resultSet.getString("name");
+        String date = checkString(resultSet.getString("DateOfInstallment"), true);
+        String prodDate = checkString(resultSet.getString("ProductionDate"), true);
+        String comment = checkString(resultSet.getString("Comment"), false);
+        SpecificationDAO specification = creatSpecificationDAO(id, checkString(resultSet.getString("TypeName"), false));
+
+        component = new ComponentDAO(id, rfid, serNr, sup, name, prodDate, date, comment, specification);
+      }
+
+    } catch (Exception e) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      System.exit(0);
+    }
+    return component;
   }
 
   private void makeConnection() throws SQLException {
