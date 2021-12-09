@@ -31,7 +31,7 @@ public class SQLiteDB implements IComponentDatabase {
     List<ComponentDAO> components = new ArrayList<ComponentDAO>();
     try {
       makeConnection();
-      ResultSet resultSet = executeQuery("SELECT * FROM Component;");
+      ResultSet resultSet = executeSelectQuery("SELECT * FROM Component;");
       while (resultSet.next()) {
 
         String date = checkString(resultSet.getString("DateOfInstallment"), true);
@@ -54,7 +54,31 @@ public class SQLiteDB implements IComponentDatabase {
 
   @Override
   public boolean addOrUpdateComponent(ComponentDAO com) {
-    System.out.println("Adding component: " + com);
+    try {
+      makeConnection();
+      String query;
+      if (findIfComponentExists(com.getrFID())) {
+        System.out.println("updating component: " + com);
+        query = "UPDATE Component SET SerialNumber = '" + com.getSerialNumber() + "', Supplier = '"
+            + com.getSupplier()
+            + "', Name = '" + com.getName() + "', Comment = '" + com.getComment() + "' WHERE RFID = '" + com.getrFID()
+            + "'";
+        System.out.println(query);
+      } else {
+        System.out.println("adding component: " + com);
+        query = "INSERT INTO Component (RFID, SerialNumber, Supplier, Name, Comment) VALUES ('" + com.getrFID() + "','"
+            + com.getSerialNumber() + "','" + com.getSupplier() + "','" + com.getName() + "','" + com.getComment()
+            + "');";
+        System.out.println(query);
+      }
+      // ", ProductionDate = " + com.getProductionDate() + ", DateOfInstallment = " +
+      // com.getDateOfInstallment()
+      System.out.println(executeUpdateQuery(query));
+      closeConnection();
+    } catch (Exception e) {
+      System.err.println(e);
+      return false;
+    }
     return true;
   }
 
@@ -62,7 +86,7 @@ public class SQLiteDB implements IComponentDatabase {
     ComponentDAO component = null;
     try {
       makeConnection();
-      ResultSet resultSet = executeQuery(query);
+      ResultSet resultSet = executeSelectQuery(query);
       if (resultSet.next()) {
         int id = resultSet.getInt("ID");
         String rfid = resultSet.getString("RFID");
@@ -76,6 +100,7 @@ public class SQLiteDB implements IComponentDatabase {
 
         component = new ComponentDAO(id, rfid, serNr, sup, name, prodDate, date, comment, specification);
       }
+      closeConnection();
 
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -86,17 +111,31 @@ public class SQLiteDB implements IComponentDatabase {
 
   private void makeConnection() throws SQLException {
     connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/tags.db");
-    connection.setAutoCommit(false);
+    connection.setAutoCommit(true);
     stmt = connection.createStatement();
   }
 
-  private ResultSet executeQuery(String query) throws SQLException {
+  private ResultSet executeSelectQuery(String query) throws SQLException {
     return stmt.executeQuery(query);
+  }
+
+  private int executeUpdateQuery(String query) throws SQLException {
+    return stmt.executeUpdate(query);
   }
 
   private void closeConnection() throws SQLException {
     stmt.close();
     connection.close();
+  }
+
+  private boolean findIfComponentExists(String rfid) throws SQLException {
+    String query = "SELECT count() as doesexist FROM Component where RFID = '" + rfid + "'";
+    ResultSet rs = executeSelectQuery(query);
+    boolean exists = false;
+    if (rs.next())
+      if (rs.getInt(1) > 0)
+        exists = true;
+    return exists;
   }
 
   private String checkString(String result, boolean isDate) {
@@ -115,8 +154,7 @@ public class SQLiteDB implements IComponentDatabase {
       return null;
     else {
       String query = "select * from " + type + " where id is '" + id + "'";
-      System.out.println(query);
-      ResultSet resultSet = executeQuery(query);
+      ResultSet resultSet = executeSelectQuery(query);
       if (resultSet.next()) {
         switch (type) {
           case "Travo":

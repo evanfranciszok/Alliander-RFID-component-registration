@@ -10,7 +10,6 @@
 
 <body>
   <div th:if="${component != null}">
-    <div th:text="${component.name}"></div>
     <form action="#" th:action="@{/edit/} + ${component.rFID}" th:object="${component}" method="post">
       <p>id: <input type="text" th:field="*{id}" /></p>
       <p>serialNumber: <input type="text" th:field="*{serialNumber}" /></p>
@@ -35,6 +34,7 @@
       <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
   </div>
+  <div th:if="${succes != null && succes == true}" style="background-color: green;">succes</div>
 </body>
 
 </html>

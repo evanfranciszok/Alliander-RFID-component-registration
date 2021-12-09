@@ -3,6 +3,7 @@ package nl.han.minor.alliander.rfid.prototype.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,16 +63,26 @@ public class IndexController {
 
   @GetMapping("/edit/{rfid}")
   public String getEditComponent(Model model, @PathVariable("rfid") String rfid) {
-    model.addAttribute("component", this.rfid.getComponent(rfid));
+    model.addAttribute("component", createNewOrFindComponent(rfid));
     return "editComponent";
   }
 
   @PostMapping("/edit/{rfid}")
   public String editComponent(@ModelAttribute ComponentDAO com, Model model, @PathVariable("rfid") String rfid) {
-    // if (this.rfid.addOrUpdateComponent(com)) {
-    // model.addAttribute("succes", true);
-    // }
-    model.addAttribute("component", this.rfid.getComponent(rfid));
+    com.setrFID(rfid);
+    System.out.println("the rfid code" + rfid);
+    if (this.rfid.addOrUpdateComponent(com)) {
+      model.addAttribute("succes", true);
+    }
+    model.addAttribute("component", createNewOrFindComponent(rfid));
     return "editComponent";
+  }
+
+  private ComponentDAO createNewOrFindComponent(String rfid) {
+    ComponentDAO com = this.rfid.getComponent(rfid);
+    if (com == null) {
+      com = new ComponentDAO(0, rfid, null, null, null, null, null, null, null);
+    }
+    return com;
   }
 }

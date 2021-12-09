@@ -28,6 +28,10 @@ public class ComponentDAO implements Serializable {
     this.specification = spec;
   }
 
+  // public ComponentDAO(String rFID) {
+  // this.rFID = rFID;
+  // }
+
   public int getRSSI() {
     return rSSI;
   }
