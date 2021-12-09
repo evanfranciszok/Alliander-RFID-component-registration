@@ -27,7 +27,7 @@ public class MainService implements IRFIDController {
   public MainService() {
     if (scanner == null) { // check if already initialized
       this.scanStarted = false;
-      this.scanner = new PFScanner(); // ScanMocker();
+      this.scanner = new ScanMocker(); // PFScanner();
       this.database = new SQLiteDB();
       this.connector = new TagConnector(scanner, database);
     }
@@ -38,7 +38,6 @@ public class MainService implements IRFIDController {
     if (scanStarted) {
       List<TagDAO> tags = scanner.scanTags();
       if (tags.size() > 0) {
-        System.out.println("more than 0 tags!!");
         addUniqueComponentsToList(connector.getScannedComponents(tags));
       }
     }
@@ -73,7 +72,6 @@ public class MainService implements IRFIDController {
   }
 
   private void addUniqueComponentsToList(List<ComponentDAO> newTags) {
-    System.out.println("new tags : " + newTags);
     if (newTags != null) {
       for (ComponentDAO newTag : newTags) {
         boolean isInList = false;
@@ -84,7 +82,6 @@ public class MainService implements IRFIDController {
           }
         }
         if (!isInList) {
-          System.out.println("adding " + newTag + " to list");
           tags.add(newTag);
         }
       }

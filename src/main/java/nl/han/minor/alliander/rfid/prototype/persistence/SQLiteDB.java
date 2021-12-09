@@ -58,18 +58,14 @@ public class SQLiteDB implements IComponentDatabase {
       makeConnection();
       String query;
       if (findIfComponentExists(com.getrFID())) {
-        System.out.println("updating component: " + com);
         query = "UPDATE Component SET SerialNumber = '" + com.getSerialNumber() + "', Supplier = '"
             + com.getSupplier()
             + "', Name = '" + com.getName() + "', Comment = '" + com.getComment() + "' WHERE RFID = '" + com.getrFID()
             + "'";
-        System.out.println(query);
       } else {
-        System.out.println("adding component: " + com);
         query = "INSERT INTO Component (RFID, SerialNumber, Supplier, Name, Comment) VALUES ('" + com.getrFID() + "','"
             + com.getSerialNumber() + "','" + com.getSupplier() + "','" + com.getName() + "','" + com.getComment()
             + "');";
-        System.out.println(query);
       }
       // ", ProductionDate = " + com.getProductionDate() + ", DateOfInstallment = " +
       // com.getDateOfInstallment()

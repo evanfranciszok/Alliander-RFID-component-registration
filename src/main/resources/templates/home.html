@@ -8,6 +8,10 @@
   <!-- <link rel="stylesheet" th:href="@{/style/style.css}"> -->
   <title>RFID registration</title>
   <style>
+    a {
+      text-decoration: none;
+    }
+
     .component {
       background-color: darkgray;
       width: 800px;
@@ -56,10 +60,10 @@
       flex-direction: row;
       background-color: darkgray;
       border-radius: 2px;
-      /* margin: 0px; */
       width: fit-content;
       padding: 5px;
       margin: 5px;
+      color: black;
     }
 
     .component p {
@@ -84,16 +88,13 @@
 </head>
 
 <body>
-
-  <body>
-    <div class="logo">
-      <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
-    </div>
-    <button onclick="startScanning()">Start scan</button>
-    <button onclick="stopScanning()">Stop scan</button>
-    <button onclick="resetScan()">Reset scan</button>
-    <div id="components"></div>
-  </body>
+  <div class="logo">
+    <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
+  </div>
+  <button onclick="startScanning()">Start scan</button>
+  <button onclick="stopScanning()">Stop scan</button>
+  <button onclick="resetScan()">Reset scan</button>
+  <div id="components"></div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
