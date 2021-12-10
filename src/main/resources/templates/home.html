@@ -13,15 +13,22 @@
     }
 
     .component {
-      background-color: darkgray;
+      background-color: white;
+      color: black;
+      border: 2px solid #4CAF50;
       width: 800px;
       margin: auto;
       margin-bottom: 10px;
-      padding: 10px;
+      padding: 5px;
       display: flex;
       flex-direction: column;
       justify-content: start;
       border-radius: 10px;
+      transition-duration: 0.4s;
+    }
+
+    .component:hover {
+      background-color: rgba(100, 187, 103, 0.151)
     }
 
     .mainValues {
@@ -31,10 +38,10 @@
     }
 
     .value {
-      background-color: gray;
-      border-radius: 5px;
-      padding: 20px;
-      color: white;
+      border-radius: 4px;
+      border: 2px solid #4CAF50;
+      padding: 10px;
+      color: black;
       font-size: large;
       font-weight: bold;
       margin-right: 10px;
@@ -43,12 +50,11 @@
 
     .value>p:first-child,
     .specification>*>p:first-child {
-      color: lightgray;
+      color: #688d66;
       margin-right: 4px;
     }
 
     .specification {
-      background: lightgray;
       border-radius: 5px;
       padding: 3px;
       margin-top: 10px;
@@ -58,11 +64,10 @@
     .specification>* {
       display: flex;
       flex-direction: row;
-      background-color: darkgray;
       border-radius: 2px;
       width: fit-content;
-      padding: 5px;
-      margin: 5px;
+      padding: 3px;
+      margin: 2px;
       color: black;
     }
 
@@ -84,6 +89,44 @@
     .logo>img {
       width: inherit;
     }
+
+    .button {
+      background-color: white;
+      color: black;
+      border: 2px solid #4CAF50;
+      border-radius: 5px;
+      padding: 16px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
+
+    .buttonred {
+      border: 2px solid #db421b;
+    }
+
+    .button:hover {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .buttonred:hover {
+      background-color: #db421b;
+    }
+
+    .control {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 5%;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 
@@ -91,9 +134,11 @@
   <div class="logo">
     <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
   </div>
-  <button onclick="startScanning()">Start scan</button>
-  <button onclick="stopScanning()">Stop scan</button>
-  <button onclick="resetScan()">Reset scan</button>
+  <div class="control">
+    <button id="start" class="button" onclick="startScanning()">Start scan</button>
+    <button id="stop" class="hidden button buttonred" onclick="stopScanning()">Stop scan</button>
+    <button class="button" onclick="resetScan()">Reset scan</button>
+  </div>
   <div id="components"></div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -119,10 +164,14 @@
   }
 
   function startScanning() {
+    $("#start").addClass("hidden");
+    $("#stop").removeClass("hidden");
     fetch("/api/startscan");
   }
 
   function stopScanning() {
+    $("#start").removeClass("hidden");
+    $("#stop").addClass("hidden");
     fetch("/api/stopscan");
   }
 
