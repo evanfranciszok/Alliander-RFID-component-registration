@@ -47,6 +47,8 @@ public class IndexController {
   @GetMapping("/api/getcomponentsfromscan")
   public String getComponentsFromScan(Model model) {
     model.addAttribute("components", rfid.getComponentsFromScan());
+    model.addAttribute("amount", rfid.getComponentsFromScan().size());
+
     return "components";
   }
 

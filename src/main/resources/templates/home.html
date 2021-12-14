@@ -5,78 +5,95 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link rel="stylesheet" th:href="@{/style/style.css}"> -->
+  <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
   <title>RFID registration</title>
   <style>
-    a {
-      text-decoration: none;
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .info {
+      background-color: #ebebeb;
+      width: fit-content;
+      min-width: 50%;
+      border-radius: 5px;
+      margin: auto;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      margin-bottom: 30px;
+    }
+
+    .components {
+      margin: auto;
+      display: flex;
+      justify-content: center;
     }
 
     .component {
-      background-color: white;
-      color: black;
-      border: 2px solid #4CAF50;
-      width: 800px;
+      background-color: #ebebeb;
+      width: fit-content;
+      min-width: 50%;
+      border-radius: 5px;
+      border-bottom: 2px solid #D1C4E9;
+      transition: 0.2s;
       margin: auto;
-      margin-bottom: 10px;
-      padding: 5px;
-      display: flex;
-      flex-direction: column;
-      justify-content: start;
-      border-radius: 10px;
-      transition-duration: 0.4s;
+      margin-bottom: 30px;
     }
 
     .component:hover {
-      background-color: rgba(100, 187, 103, 0.151)
+      border-bottom: 4px solid #673AB7;
     }
 
-    .mainValues {
+    .title {
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap;
+      justify-content: space-between;
     }
 
-    .value {
-      border-radius: 4px;
-      border: 2px solid #4CAF50;
-      padding: 10px;
+    .edit {
+      color: #757575;
+      padding: 11px;
+      font-size: 1.1em;
+      transition: 0.2s;
+    }
+
+    .edit:hover {
       color: black;
-      font-size: large;
-      font-weight: bold;
-      margin-right: 10px;
-      display: flex;
     }
 
-    .value>p:first-child,
-    .specification>*>p:first-child {
-      color: #688d66;
-      margin-right: 4px;
-    }
-
-    .specification {
-      border-radius: 5px;
-      padding: 3px;
-      margin-top: 10px;
-      display: flex;
-    }
-
-    .specification>* {
-      display: flex;
-      flex-direction: row;
-      border-radius: 2px;
+    .name {
+      background-color: #757575;
       width: fit-content;
-      padding: 3px;
-      margin: 2px;
+      padding: 10px;
+      border-bottom-right-radius: 5px;
+      border-top-left-radius: 5px;
+      border-bottom: 2px solid #D1C4E9;
+      color: white;
+      font-weight: bold;
+    }
+
+    .infoblock {
+      font-size: 0.8em;
+      display: flex;
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .infoblock p {
+      margin: 0px;
+      padding: 5px;
+      padding-left: 10px;
+      color: gray;
+    }
+
+    .infoblock p:last-child {
       color: black;
-    }
-
-    .component p {
-      margin: 0;
-    }
-
-    .value:last-child {
-      margin-right: 0;
+      background-color: white;
+      flex-grow: 1;
+      border-radius: 3px;
+      margin-right: 10px;
+      padding-right: 10px;
     }
 
     .logo {
@@ -127,6 +144,10 @@
     .hidden {
       display: none;
     }
+
+    .valueName {
+      background-color: red;
+    }
   </style>
 </head>
 
@@ -139,7 +160,32 @@
     <button id="stop" class="hidden button buttonred" onclick="stopScanning()">Stop scan</button>
     <button class="button" onclick="resetScan()">Reset scan</button>
   </div>
-  <div id="components"></div>
+  <div id="components">
+    <!-- <div class="component">
+      <a href="/edit/1054700164585905040406788177920000">
+        <div class=" mainValues">
+          <div class="valueName">
+            <p>name: </p>
+            <p>big chip</p>
+          </div>
+          <div class="value">
+            <p>id: </p>
+            <p>1</p>
+          </div>
+        </div>
+        <div class="specification">
+          <div>
+            <p>VA:</p>
+            <p>15</p>
+          </div>
+          <div>
+            <p>Volt:</p>
+            <p>9000</p>
+          </div>
+        </div>
+      </a>
+    </div> -->
+  </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
