@@ -12,6 +12,7 @@ import nl.han.minor.alliander.rfid.prototype.persistence.PFScanner;
 import nl.han.minor.alliander.rfid.prototype.persistence.SQLiteDB;
 import nl.han.minor.alliander.rfid.prototype.persistence.ScanMocker;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
+import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.MSRDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.TagDAO;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IComponentDatabase;
 import nl.han.minor.alliander.rfid.prototype.persistence.interfaces.IScanner;
@@ -96,5 +97,15 @@ public class MainService implements IRFIDController {
   @Override
   public boolean addOrUpdateComponent(ComponentDAO com) {
     return database.addOrUpdateComponent(com);
+  }
+
+  @Override
+  public List<MSRDAO> getAllMSRs() {
+    return database.getAllMSRs();
+  }
+
+  @Override
+  public List<ComponentDAO> getAllComponents() {
+    return database.getAllComponents();
   }
 }

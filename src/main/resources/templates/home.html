@@ -8,12 +8,20 @@
   <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
   <title>RFID registration</title>
   <style>
+    :root {
+      --gray: #ebebeb;
+      --darkgray: #757575;
+      --lightPurple: #D1C4E9;
+      --darkPurple: #673AB7;
+    }
+
     body {
       font-family: Arial, sans-serif;
     }
 
-    .info {
-      background-color: #ebebeb;
+    .header {
+      display: flex;
+      flex-direction: row;
       width: fit-content;
       min-width: 50%;
       border-radius: 5px;
@@ -21,6 +29,14 @@
       padding-top: 1px;
       padding-bottom: 1px;
       margin-bottom: 30px;
+      flex-grow: 1;
+    }
+
+    .info {
+      background-color: #ebebeb;
+      border-radius: 5px;
+      flex-grow: 1;
+      height: fit-content;
     }
 
     .components {
@@ -35,9 +51,10 @@
       min-width: 50%;
       border-radius: 5px;
       border-bottom: 2px solid #D1C4E9;
-      transition: 0.2s;
+      transition: 0.1s;
       margin: auto;
       margin-bottom: 30px;
+      box-shadow: 3px 2px 8px -2px rgba(0, 0, 0, 0.3);
     }
 
     .component:hover {
@@ -67,9 +84,9 @@
       padding: 10px;
       border-bottom-right-radius: 5px;
       border-top-left-radius: 5px;
-      border-bottom: 2px solid #D1C4E9;
       color: white;
       font-weight: bold;
+      box-shadow: inset -5px -5px 14px -11px #000;
     }
 
     .infoblock {
@@ -112,14 +129,14 @@
       color: black;
       border: 2px solid #4CAF50;
       border-radius: 5px;
-      padding: 16px 32px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
       font-size: 16px;
-      margin: 4px 2px;
       transition-duration: 0.4s;
       cursor: pointer;
+      padding: 11px;
+      margin-left: 11px;
     }
 
     .buttonred {
@@ -138,7 +155,6 @@
     .control {
       display: flex;
       justify-content: center;
-      margin-bottom: 5%;
     }
 
     .hidden {
@@ -148,6 +164,69 @@
     .valueName {
       background-color: red;
     }
+
+    select {
+      /* Reset Select */
+      appearance: none;
+      outline: 0;
+      border: 0;
+      box-shadow: none;
+      /* Personalize */
+      flex: 1;
+      padding: 0 1em;
+      background-color: var(--gray);
+      background-image: none;
+      cursor: pointer;
+    }
+
+    /* Remove IE arrow */
+    select::-ms-expand {
+      display: none;
+    }
+
+    /* Custom Select wrapper */
+    .select {
+      margin: auto;
+      margin-bottom: 50px;
+      position: relative;
+      display: flex;
+      width: 20em;
+      height: 3em;
+      border-radius: .25em;
+      overflow: hidden;
+    }
+
+    /* Arrow */
+    .select::after {
+      content: '\25BC';
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 1em;
+      /* background-color: var(--darkgray); */
+      color: var(--lightPurple);
+      transition: .25s all ease;
+      pointer-events: none;
+    }
+
+    /* Transition */
+    .select:hover::after {
+      color: var(--darkPurple);
+    }
+
+    .select h1 {
+      margin: 0 0 0.25em;
+    }
+
+    .select a {
+      font-weight: bold;
+      color: var(--gray);
+      text-decoration: none;
+      padding: .25em;
+      border: 0;
+      border-radius: .25em;
+      background: white;
+    }
   </style>
 </head>
 
@@ -155,74 +234,102 @@
   <div class="logo">
     <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
   </div>
-  <div class="control">
-    <button id="start" class="button" onclick="startScanning()">Start scan</button>
-    <button id="stop" class="hidden button buttonred" onclick="stopScanning()">Stop scan</button>
-    <button class="button" onclick="resetScan()">Reset scan</button>
+  <div id="select" class="select">
+    <select>
+      <option th:if="${comInMsr}" value="comInMsr">All components in MRS</option>
+      <option value="tags">Scan all tags</option>
+      <option value="msr">Get all MSR's</option>
+      <option value="com">Get all components</option>
+    </select>
   </div>
   <div id="components">
-    <!-- <div class="component">
-      <a href="/edit/1054700164585905040406788177920000">
-        <div class=" mainValues">
-          <div class="valueName">
-            <p>name: </p>
-            <p>big chip</p>
-          </div>
-          <div class="value">
-            <p>id: </p>
-            <p>1</p>
-          </div>
-        </div>
-        <div class="specification">
-          <div>
-            <p>VA:</p>
-            <p>15</p>
-          </div>
-          <div>
-            <p>Volt:</p>
-            <p>9000</p>
-          </div>
-        </div>
-      </a>
-    </div> -->
   </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
   var prevHTML = '';
+  var scanning = false;
+  var searchType = $("#select option:selected").val();
 
   $(document).ready(function () {
-    getcomponents();
-    setInterval(getcomponents, 1000);
+    executeGetRequest();
+    setInterval(executeGetRequest, 1000);
+    $("#select").change(function () {
+      searchType = $("#select option:selected").val();
+      executeGetRequest();
+      prevHTML = "";
+    });
   });
 
-  function getcomponents() {
-    console.log("trying update");
-    $.ajax({
-      url: "api/getcomponentsfromscan", success: function (result) {
-        if (prevHTML != result) {
-          $("#components").html(result);
-          prevHTML = result;
-          console.log("update");
-        }
-      }
-    });
+  function executeGetRequest() {
+    switch (searchType) {
+      case "tags":
+        $.ajax({
+          url: "api/getcomponentsfromscan", success: function (result) {
+            if (prevHTML != result) {
+              $("#components").html(result);
+              if (scanning) {
+                $("#start").addClass("hidden");
+                $("#stop").removeClass("hidden");
+              }
+              prevHTML = result;
+            }
+          }
+        });
+        break;
+      case "msr":
+        $.ajax({
+          url: "api/allMSR", success: function (result) {
+            if (prevHTML != result) {
+              $("#components").html(result);
+              prevHTML = result;
+            }
+          }
+        });
+        break;
+      case "com":
+        $.ajax({
+          url: "api/allCom", success: function (result) {
+            if (prevHTML != result) {
+              $("#components").html(result);
+              prevHTML = result;
+            }
+          }
+        });
+        break;
+      case "comInMsr":
+        $.ajax({
+          url: "/api/allCom/" + $(location).attr('pathname').substring(1), success: function (result) {
+            if (prevHTML != result) {
+              $("#components").html(result);
+              prevHTML = result;
+            }
+          }
+        });
+        break;
+      default:
+        $("#components").html("<p style=\"margin: auto; \">please select a option from the select box</p>");
+        break;
+    }
   }
 
   function startScanning() {
     $("#start").addClass("hidden");
     $("#stop").removeClass("hidden");
+    scanning = true;
     fetch("/api/startscan");
   }
 
   function stopScanning() {
     $("#start").removeClass("hidden");
     $("#stop").addClass("hidden");
+    scanning = false;
     fetch("/api/stopscan");
   }
 
   function resetScan() {
     fetch("/api/resetscan");
+    executeGetRequest();
   }
 </script>
 

@@ -28,28 +28,47 @@ public class SQLiteDB implements IComponentDatabase {
 
   @Override
   public List<ComponentDAO> getAllComponents() {
-    List<ComponentDAO> components = new ArrayList<ComponentDAO>();
+    String query = "select Component.*, ComponentType.Name as TypeName from Component LEFT JOIN ComponentType on Component.Type = ComponentType.ID";
+    System.out.println(query);
     try {
+      List<ComponentDAO> coms = new ArrayList<ComponentDAO>();
       makeConnection();
-      ResultSet resultSet = executeSelectQuery("SELECT * FROM Component;");
+      ResultSet resultSet = executeSelectQuery(query);
       while (resultSet.next()) {
-
-        String date = checkString(resultSet.getString("DateOfInstallment"), true);
-        String prodDate = checkString(resultSet.getString("ProductionDate"), true);
-        String comment = checkString(resultSet.getString("Comment"), false);
-
-        components.add(
-            new ComponentDAO(resultSet.getInt("ID"), resultSet.getString("RFID"), resultSet.getString("SerialNumber"),
-                resultSet.getString("Supplier"), resultSet.getString("Name"), prodDate, date,
-                comment, null));
+        coms.add(createComponentFromResultSet(resultSet));
       }
-      resultSet.close();
+      System.out.println(coms.size());
       closeConnection();
+      return coms;
     } catch (Exception e) {
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-      System.exit(0);
+      System.out.println(e);
     }
-    return components;
+    return null;
+  }
+
+  @Override
+  public List<MSRDAO> getAllMSRs() {
+    String query = "SELECT * FROM MSR";
+    try {
+      List<MSRDAO> mSRs = new ArrayList<MSRDAO>();
+      makeConnection();
+      ResultSet resultSet = executeSelectQuery(query);
+      while (resultSet.next()) {
+        int iD = resultSet.getInt("ID");
+        String sn = resultSet.getString("SerialNumber");
+        String addr = resultSet.getString("Address");
+        String nc = resultSet.getString("NominalCurrent");
+        String ow = resultSet.getString("Owner");
+        String admin = resultSet.getString("Administrator");
+        String st = resultSet.getString("State");
+        mSRs.add(new MSRDAO(iD, sn, addr, nc, ow, admin, st));
+      }
+      closeConnection();
+      return mSRs;
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+    return null;
   }
 
   @Override
@@ -84,24 +103,30 @@ public class SQLiteDB implements IComponentDatabase {
       makeConnection();
       ResultSet resultSet = executeSelectQuery(query);
       if (resultSet.next()) {
-        int id = resultSet.getInt("ID");
-        String rfid = resultSet.getString("RFID");
-        String serNr = resultSet.getString("SerialNumber");
-        String sup = resultSet.getString("Supplier");
-        String name = resultSet.getString("name");
-        String date = checkString(resultSet.getString("DateOfInstallment"), true);
-        String prodDate = checkString(resultSet.getString("ProductionDate"), true);
-        String comment = checkString(resultSet.getString("Comment"), false);
-        SpecificationDAO specification = creatSpecificationDAO(id, checkString(resultSet.getString("TypeName"), false));
-
-        component = new ComponentDAO(id, rfid, serNr, sup, name, prodDate, date, comment, specification);
+        component = createComponentFromResultSet(resultSet);
       }
       closeConnection();
 
     } catch (Exception e) {
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-      System.exit(0);
+      System.err.println(e);
     }
+    return component;
+  }
+
+  private ComponentDAO createComponentFromResultSet(ResultSet resultSet) throws SQLException {
+    ComponentDAO component;
+    int id = resultSet.getInt("ID");
+    String rfid = resultSet.getString("RFID");
+    String serNr = resultSet.getString("SerialNumber");
+    String sup = resultSet.getString("Supplier");
+    String name = resultSet.getString("name");
+    String date = checkString(resultSet.getString("DateOfInstallment"), true);
+    String prodDate = checkString(resultSet.getString("ProductionDate"), true);
+    String comment = checkString(resultSet.getString("Comment"), false);
+    // SpecificationDAO specification = createSpecificationDAO(id,
+    // checkString(resultSet.getString("TypeName"), false));
+
+    component = new ComponentDAO(id, rfid, serNr, sup, name, prodDate, date, comment, null);
     return component;
   }
 
@@ -145,7 +170,7 @@ public class SQLiteDB implements IComponentDatabase {
       return null;
   }
 
-  private SpecificationDAO creatSpecificationDAO(int id, String type) throws SQLException {
+  private SpecificationDAO createSpecificationDAO(int id, String type) throws SQLException {
     if (type == null || type.isEmpty())
       return null;
     else {

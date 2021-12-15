@@ -1,5 +1,7 @@
 package nl.han.minor.alliander.rfid.prototype.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +49,51 @@ public class IndexController {
   @GetMapping("/api/getcomponentsfromscan")
   public String getComponentsFromScan(Model model) {
     model.addAttribute("components", rfid.getComponentsFromScan());
+    model.addAttribute("name", "Amount of Tags");
     model.addAttribute("amount", rfid.getComponentsFromScan().size());
+    model.addAttribute("showButtons", true);
+    return "components";
+  }
 
+  // get All MSRs
+  @GetMapping("/api/allMSR")
+  public String getAllMSR(Model model) {
+    model.addAttribute("msrs", rfid.getAllMSRs());
+    return "msrs";
+  }
+
+  // get all com for msr
+  @GetMapping("/api/allCom")
+  public String getAllCom(Model model) {
+    List<ComponentDAO> allComponents = rfid.getAllComponents();
+    // System.out.println(allComponents);
+    model.addAttribute("components", allComponents);
+    model.addAttribute("name", "Amount of components");
+    model.addAttribute("amount", allComponents.size());
+    return "components";
+  }
+
+  // get all components for
+  @GetMapping("/{MSRid}")
+  public String getMSRInfo(Model model, @PathVariable("MSRid") int mSRid) {
+    model.addAttribute("comInMsr", true);
+    return "home";
+  }
+
+  // get all components
+  @GetMapping("/api/allCom/{MSRid}")
+  public String getAllComForMSR(Model model, @PathVariable("MSRid") String mSRid) {
+    model.addAttribute("name", "Amount of components");
+    model.addAttribute("amount", "0");
+    // model.addAttribute("components", rfid.getAllComponents());
+    // Todo: add in logic to get correct components
+    return "components";
+  }
+
+  // get all tags
+  @GetMapping("/api/allTags")
+  public String getAllTags(Model model) {
+    model.addAttribute("component", rfid.getComponentsFromScan());
     return "components";
   }
 

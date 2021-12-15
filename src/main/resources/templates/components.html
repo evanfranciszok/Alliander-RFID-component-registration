@@ -9,10 +9,17 @@
 </head>
 
 <body>
-  <div class="info">
-    <div class="infoblock">
-      <p>amount of tags</p>
-      <p th:text="${amount}"></p>
+  <div class="header">
+    <div class="info">
+      <div class="infoblock">
+        <p th:text="${name}">amount</p>
+        <p th:text="${amount}">0</p>
+      </div>
+    </div>
+    <div th:if="${showButtons}" class="control">
+      <button id="start" class="button" onclick="startScanning()">Start scan</button>
+      <button id="stop" class="hidden button buttonred" onclick="stopScanning()">Stop scan</button>
+      <button class="button" onclick="resetScan()">Reset scan</button>
     </div>
   </div>
   <div class="component" th:each="component: ${components}">
