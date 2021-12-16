@@ -16,4 +16,6 @@ public interface IComponentDatabase {
   public List<MSRDAO> getAllMSRs();
 
   public List<ComponentDAO> getAllComponents();
+
+  public List<ComponentDAO> getAllComponentFromMSR(int mSRId);
 }

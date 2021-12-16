@@ -46,15 +46,6 @@ public class IndexController {
     return new ResponseEntity<>("scan started", HttpStatus.OK);
   }
 
-  @GetMapping("/api/getcomponentsfromscan")
-  public String getComponentsFromScan(Model model) {
-    model.addAttribute("components", rfid.getComponentsFromScan());
-    model.addAttribute("name", "Amount of Tags");
-    model.addAttribute("amount", rfid.getComponentsFromScan().size());
-    model.addAttribute("showButtons", true);
-    return "components";
-  }
-
   // get All MSRs
   @GetMapping("/api/allMSR")
   public String getAllMSR(Model model) {
@@ -83,17 +74,19 @@ public class IndexController {
   // get all components
   @GetMapping("/api/allCom/{MSRid}")
   public String getAllComForMSR(Model model, @PathVariable("MSRid") String mSRid) {
-    model.addAttribute("name", "Amount of components");
-    model.addAttribute("amount", "0");
-    // model.addAttribute("components", rfid.getAllComponents());
-    // Todo: add in logic to get correct components
+    model.addAttribute("components", rfid.getAllComponents(Integer.valueOf(mSRid)));
+    model.addAttribute("name", "Id of MSR");
+    model.addAttribute("amount", mSRid);
     return "components";
   }
 
   // get all tags
   @GetMapping("/api/allTags")
   public String getAllTags(Model model) {
-    model.addAttribute("component", rfid.getComponentsFromScan());
+    model.addAttribute("components", rfid.getComponentsFromScan());
+    model.addAttribute("name", "Amount of Tags");
+    model.addAttribute("amount", rfid.getComponentsFromScan().size());
+    model.addAttribute("showButtons", true);
     return "components";
   }
 

@@ -25,14 +25,8 @@ public class TagConnector implements IInfoConnector {
     List<ComponentDAO> components = new ArrayList<ComponentDAO>();
     for (TagDAO id : ids) {
       ComponentDAO com = database.getComponentFromRFID(id.getId());
-      // com.setRSSI(id.getRSSI());
-      // ComponentDAO com = new ComponentDAO(tagnr, id.getId(), id.getId(), "String
-      // sup", "" + id.getId(),
-      // "String prodDate",
-      // "String dOI", "String com",
-      // null);
-      // tagnr++;
-      // com.setRSSI(id.getRSSI());
+      if (com == null)
+        com = new ComponentDAO(0, id.getId(), null, null, null, null, null, null, null);
       components.add(com);
     }
     return components;

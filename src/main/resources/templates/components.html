@@ -24,14 +24,21 @@
   </div>
   <div class="component" th:each="component: ${components}">
     <div class=" title">
-      <div class="name" th:text="${component.name}">
+      <div class="name" th:if="${component.id != 0}" th:text="${component.name}">
         name
+      </div>
+      <div th:if="${component.id == 0}" class="name">
+        <i class="fa fa-question"></i> unknown tag
       </div>
       <a th:href="@{/edit/{path}(path=${component.rFID})}" class="edit">
         <i class='fas fa-edit'></i>
       </a>
     </div>
-    <div class="infoblock">
+    <div th:if="${component.id == 0}" class="infoblock">
+      <p>Tag code</p>
+      <p th:text="${component.rFID}"></p>
+    </div>
+    <div th:if="${component.serialNumber != null}" class="infoblock">
       <p>SerialNR</p>
       <p th:text="${component.serialNumber}"></p>
     </div>

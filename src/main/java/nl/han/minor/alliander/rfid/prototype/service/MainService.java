@@ -74,16 +74,20 @@ public class MainService implements IRFIDController {
 
   private void addUniqueComponentsToList(List<ComponentDAO> newTags) {
     if (newTags != null) {
-      for (ComponentDAO newTag : newTags) {
+      for (ComponentDAO newComponent : newTags) {
         boolean isInList = false;
-        for (ComponentDAO tag : tags) {
-          if (tag.getId() == newTag.getId()) {
+        for (ComponentDAO component : tags) {
+          if (component.getrFID().equals(newComponent.getrFID())) {
             isInList = true;
             break;
           }
+          // if (compent.getId() != 0 && component.getrFID() == newComponent.getrFID()) {
+          // isInList = true;
+          // break;
+          // }
         }
         if (!isInList) {
-          tags.add(newTag);
+          tags.add(newComponent);
         }
       }
     }
@@ -107,5 +111,10 @@ public class MainService implements IRFIDController {
   @Override
   public List<ComponentDAO> getAllComponents() {
     return database.getAllComponents();
+  }
+
+  @Override
+  public List<ComponentDAO> getAllComponents(int mSRId) {
+    return database.getAllComponentFromMSR(mSRId);
   }
 }

@@ -29,7 +29,6 @@ public class SQLiteDB implements IComponentDatabase {
   @Override
   public List<ComponentDAO> getAllComponents() {
     String query = "select Component.*, ComponentType.Name as TypeName from Component LEFT JOIN ComponentType on Component.Type = ComponentType.ID";
-    System.out.println(query);
     try {
       List<ComponentDAO> coms = new ArrayList<ComponentDAO>();
       makeConnection();
@@ -37,7 +36,6 @@ public class SQLiteDB implements IComponentDatabase {
       while (resultSet.next()) {
         coms.add(createComponentFromResultSet(resultSet));
       }
-      System.out.println(coms.size());
       closeConnection();
       return coms;
     } catch (Exception e) {
@@ -65,6 +63,25 @@ public class SQLiteDB implements IComponentDatabase {
       }
       closeConnection();
       return mSRs;
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+    return null;
+  }
+
+  @Override
+  public List<ComponentDAO> getAllComponentFromMSR(int mSRId) {
+    String query = "select c.* from Component_in_MSR as cm left join Component as c on cm.ComponentID = c.ID where cm.MSRID = '"
+        + mSRId + "'";
+    try {
+      List<ComponentDAO> coms = new ArrayList<ComponentDAO>();
+      makeConnection();
+      ResultSet resultSet = executeSelectQuery(query);
+      while (resultSet.next()) {
+        coms.add(createComponentFromResultSet(resultSet));
+      }
+      closeConnection();
+      return coms;
     } catch (Exception e) {
       System.out.println(e);
     }

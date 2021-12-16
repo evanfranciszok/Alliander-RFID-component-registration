@@ -265,7 +265,7 @@
     switch (searchType) {
       case "tags":
         $.ajax({
-          url: "api/getcomponentsfromscan", success: function (result) {
+          url: "api/allTags", success: function (result) {
             if (prevHTML != result) {
               $("#components").html(result);
               if (scanning) {

@@ -24,4 +24,6 @@ public interface IRFIDController {
   public boolean addOrUpdateComponent(ComponentDAO com);
 
   public List<ComponentDAO> getAllComponents();
+
+  public List<ComponentDAO> getAllComponents(int mSRid);
 }
