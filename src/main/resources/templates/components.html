@@ -19,7 +19,7 @@
     <div th:if="${showButtons}" class="control">
       <button id="start" class="button" onclick="startScanning()">Start scan</button>
       <button id="stop" class="hidden button buttonred" onclick="stopScanning()">Stop scan</button>
-      <button class="button" onclick="resetScan()">Reset scan</button>
+      <button th:if="${showResetButton}" class="button" onclick="resetScan()">Reset scan</button>
     </div>
   </div>
   <div class="component" th:each="component: ${components}">

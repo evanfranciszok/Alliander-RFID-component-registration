@@ -76,6 +76,7 @@ public class IndexController {
     model.addAttribute("components", rfid.getAllComponents(Integer.valueOf(mSRid)));
     model.addAttribute("name", "Id of MSR");
     model.addAttribute("amount", mSRid);
+    model.addAttribute("showButtons", true);
     return "components";
   }
 
@@ -86,6 +87,7 @@ public class IndexController {
     model.addAttribute("name", "Amount of Tags");
     model.addAttribute("amount", rfid.getComponentsFromScan().size());
     model.addAttribute("showButtons", true);
+    model.addAttribute("showResetButton", true);
     return "components";
   }
 

@@ -24,24 +24,13 @@ public class MainService implements IRFIDController {
   private static IScanner scanner;
   private static IComponentDatabase database;
   private static List<ComponentDAO> tags = new ArrayList<ComponentDAO>();
-  private static List<String> correctRfids;
 
   public MainService() {
     if (scanner == null) { // check if already initialized
       this.scanStarted = false;
       this.scanner = new ScanMocker(); // PFScanner();
-      this.correctRfids = new ArrayList<>(List.of(
-          "300030155C97D461A7C0021D3D2A",
-          "30000000000000000000001AF1D0",
-          "300030155C97D461A7C0021D3A52",
-          "30000000000000000000001B64E8",
-          "30003036143C4030D3400000001B",
-          "300030155C97D461A7C0021D3ADF",
-          "340030155C97D461A6C00036F40B",
-          "300030155C97D461A7C0021D3ADF",
-          "300030155C97D461A7C0021D3ADF",
-          "300030155C97D461A7C0021D3ADF",
-          "300030155C97D461A7C0021D3ADF"));
+      this.database = new SQLiteDB();
+      this.connector = new TagConnector(scanner, database);
     }
   }
 
@@ -88,7 +77,7 @@ public class MainService implements IRFIDController {
       for (ComponentDAO newComponent : newTags) {
         boolean isInList = false;
         for (ComponentDAO component : tags) {
-          if (component.getrFID().equals(newComponent.getrFID()) || componentIsNotInList(newComponent.getrFID())) {
+          if (component.getrFID().equals(newComponent.getrFID())) {
             isInList = true;
             break;
           }
@@ -98,15 +87,6 @@ public class MainService implements IRFIDController {
         }
       }
     }
-  }
-
-  private boolean componentIsNotInList(String getrFID) {
-    for (String expectedString : correctRfids) {
-      if (expectedString.equals(getrFID)) {
-        return false;
-      }
-    }
-    return true;
   }
 
   @Override
