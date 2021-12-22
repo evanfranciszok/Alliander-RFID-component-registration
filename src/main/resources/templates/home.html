@@ -13,6 +13,7 @@
       --darkgray: #757575;
       --lightPurple: #D1C4E9;
       --darkPurple: #673AB7;
+      --green: #4CAF50;
     }
 
     body {
@@ -127,7 +128,7 @@
     .button {
       background-color: white;
       color: black;
-      border: 2px solid #4CAF50;
+      border: 2px solid var(--green);
       border-radius: 5px;
       text-align: center;
       text-decoration: none;
@@ -144,7 +145,7 @@
     }
 
     .button:hover {
-      background-color: #4CAF50;
+      background-color: var(--green);
       color: white;
     }
 
@@ -227,6 +228,38 @@
       border-radius: .25em;
       background: white;
     }
+
+    .componentInfo {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 50%;
+      min-width: fit-content;
+      margin: auto;
+    }
+
+    .componentInfo>.component {
+      width: 100%;
+    }
+
+    .status {
+      font-size: 2em;
+      margin-left: 20px;
+      padding-bottom: 30px;
+      width: 40px;
+    }
+
+    .statusgreen {
+      color: var(--green);
+    }
+
+    .statusred {
+      color: red;
+    }
+
+    .statusorange {
+      color: orange;
+    }
   </style>
 </head>
 
@@ -298,14 +331,25 @@
         });
         break;
       case "comInMsr":
-        $.ajax({
-          url: "/api/allCom/" + $(location).attr('pathname').substring(1), success: function (result) {
-            if (prevHTML != result) {
-              $("#components").html(result);
-              prevHTML = result;
+        if (scanning) {
+          $.ajax({
+            url: "/api/allComDiff/" + $(location).attr('pathname').substring(1), success: function (result) {
+              if (prevHTML != result) {
+                $("#components").html(result);
+                prevHTML = result;
+              }
             }
-          }
-        });
+          });
+        } else {
+          $.ajax({
+            url: "/api/allCom/" + $(location).attr('pathname').substring(1), success: function (result) {
+              if (prevHTML != result) {
+                $("#components").html(result);
+                prevHTML = result;
+              }
+            }
+          });
+        }
         break;
       default:
         $("#components").html("<p style=\"margin: auto; \">please select a option from the select box</p>");

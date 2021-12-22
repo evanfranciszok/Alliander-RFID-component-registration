@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import nl.han.minor.alliander.rfid.prototype.service.DAOs.ServiceInfoComponentDAO;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
 import nl.han.minor.alliander.rfid.prototype.persistence.PFScanner;
@@ -112,5 +113,27 @@ public class MainService implements IRFIDController {
   @Override
   public List<ComponentDAO> getAllComponents(int mSRId) {
     return database.getAllComponentFromMSR(mSRId);
+  }
+
+  @Override
+  public List<ServiceInfoComponentDAO> getInfoOfScanForMSR(int mSRid) {
+    List<ServiceInfoComponentDAO> infoOfCom = new ArrayList<ServiceInfoComponentDAO>();
+    for (ComponentDAO com : getAllComponents(mSRid)) {
+      infoOfCom.add(new ServiceInfoComponentDAO(com, "NOTFOUND"));
+    }
+    for (ComponentDAO newCom : getComponentsFromScan()) {
+      boolean comFound = false;
+      for (ServiceInfoComponentDAO infoCom : infoOfCom) {
+        if (infoCom.getCom().getrFID().equals(newCom.getrFID())) {
+          comFound = true;
+          infoCom.setStatus("FOUND");
+          break;
+        }
+      }
+      if (!comFound)
+        infoOfCom.add(new ServiceInfoComponentDAO(newCom, "NEW"));
+    }
+    System.out.println(infoOfCom);
+    return infoOfCom;
   }
 }

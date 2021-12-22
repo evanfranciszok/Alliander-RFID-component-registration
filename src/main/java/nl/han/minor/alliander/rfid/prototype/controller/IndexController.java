@@ -72,12 +72,22 @@ public class IndexController {
 
   // get all components
   @GetMapping("/api/allCom/{MSRid}")
-  public String getAllComForMSR(Model model, @PathVariable("MSRid") String mSRid) {
-    model.addAttribute("components", rfid.getAllComponents(Integer.valueOf(mSRid)));
+  public String getAllComForMSR(Model model, @PathVariable("MSRid") int mSRid) {
+    model.addAttribute("components", rfid.getAllComponents(mSRid));
     model.addAttribute("name", "Id of MSR");
     model.addAttribute("amount", mSRid);
     model.addAttribute("showButtons", true);
     return "components";
+  }
+
+  // get all components
+  @GetMapping("/api/allComDiff/{MSRid}")
+  public String getAllComForMSRWithDifference(Model model, @PathVariable("MSRid") int mSRid) {
+    model.addAttribute("components", rfid.getInfoOfScanForMSR(mSRid));
+    model.addAttribute("name", "Id of MSR");
+    model.addAttribute("amount", mSRid);
+    model.addAttribute("showButtons", true);
+    return "componentdiff";
   }
 
   // get all tags
