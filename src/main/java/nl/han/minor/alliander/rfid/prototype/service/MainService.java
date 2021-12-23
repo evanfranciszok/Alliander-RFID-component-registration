@@ -58,6 +58,7 @@ public class MainService implements IRFIDController {
 
   @Override
   public void stopScan() {
+    System.out.println("Stop scanning");
     if (scanStarted) {
       if (scanner.stopScan()) {// check if succesfully stopped
         scanStarted = false;
@@ -73,6 +74,7 @@ public class MainService implements IRFIDController {
   @Override
   public void resetScan() {
     tags = new ArrayList<ComponentDAO>();
+    differenceInComponents = new ArrayList<ServiceInfoComponentDAO>();
     differenceIndex = 0;
   }
 

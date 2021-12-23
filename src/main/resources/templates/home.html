@@ -378,8 +378,9 @@
   }
 
   function endScan() {
-    stopScanning();
-    window.location.href = "/edit/msr/" + $(location).attr('pathname').split("/").pop();
+    fetch("/api/stopscan").then(() => {
+      window.location.href = "/edit/msr/" + $(location).attr('pathname').split("/").pop();
+    })
   }
 </script>
 

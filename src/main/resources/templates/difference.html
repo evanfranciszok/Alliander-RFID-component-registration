@@ -10,9 +10,9 @@
 
 <body>
     <div th:if="${difference != null}">
-        <div>
-            <h1 th:if="${difference.status == 'NOTFOUND'}">Are you sure you want to delete this component</h1>
-            <h1 th:if="${difference.status == 'NEW'}">Are you sure you want to add this component</h1>
+        <div class="status">
+            <i th:if="${difference.status == 'NOTFOUND'}" class='fas fa-times statusred'></i>
+            <i th:if="${difference.status == 'NEW'}" class='fas fa-plus statusorange'></i>
         </div>
         <div class="component">
             <div class=" title">
@@ -22,9 +22,6 @@
                 <div th:if="${difference.com.id == 0}" class="name">
                     <i class="fa fa-question"></i> unknown tag
                 </div>
-                <a th:href="@{/edit/{path}(path=${difference.com.rFID})}" class="edit">
-                    <i class='fas fa-edit'></i>
-                </a>
             </div>
             <div th:if="${difference.com.id == 0}" class="infoblock">
                 <p>Tag code</p>
@@ -37,6 +34,20 @@
             <div th:if="${difference.com.specification != null}" class="infoblock">
                 <p>Type</p>
                 <p th:text="${difference.com.specification.type}">hello</p>
+            </div>
+        </div>
+        <div th:if="${difference.status == 'NOTFOUND'}">
+            <div class="choiceMessage">Are you sure you removed this component from the MSR?</div>
+            <div class="choiceButtons">
+                <button id="stop" class="button buttonred" onclick="stopScanning()">Do not remove</button>
+                <button id="start" class="button" onclick="startScanning()">Remove component</button>
+            </div>
+        </div>
+        <div th:if="${difference.status == 'NEW'}">
+            <div class="choiceMessage">Are you sure you added this component to the MSR?</div>
+            <div class="choiceButtons">
+                <button id="stop" class="button buttonred" onclick="stopScanning()">Do not add</button>
+                <button id="start" class="button" onclick="startScanning()">Add component</button>
             </div>
         </div>
     </div>

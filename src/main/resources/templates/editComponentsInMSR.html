@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit components in MSR</title>
+    <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
     <style>
         :root {
             --gray: #ebebeb;
@@ -133,6 +134,74 @@
             background-color: #4CAF50;
             color: white;
         }
+
+        .status {
+            font-size: 3em;
+            margin-left: 20px;
+            padding-bottom: 30px;
+            width: 40px;
+            margin: auto;
+        }
+
+        .statusgreen {
+            color: var(--green);
+        }
+
+        .statusred {
+            color: var(--red);
+        }
+
+        .statusorange {
+            color: orange;
+        }
+
+        .button {
+            background-color: white;
+            color: black;
+            border: 2px solid var(--green);
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            padding: 11px;
+            margin-left: 11px;
+        }
+
+        .buttonred {
+            border: 2px solid var(--red);
+        }
+
+        .button:hover {
+            background-color: var(--green);
+            color: white;
+        }
+
+        .buttonred:hover {
+            background-color: var(--red);
+        }
+
+        .choiceButtons {
+            margin: auto;
+            width: fit-content;
+        }
+
+        .choiceMessage {
+            background-color: var(--gray);
+            color: black;
+            width: 50%;
+            word-wrap: normal;
+            text-align: center;
+            margin: auto;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 3px 2px 8px -2px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -142,6 +211,7 @@
     </div>
     <div id="difference"></div>
     <button onclick="nextCom()">Next component</button>
+    <button onclick="cancelDiff()">cancel</button>
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -172,6 +242,11 @@
         console.log("getting next");
         fetch("/api/getNextCom");
         executeGetRequest();
+    }
+
+    function cancelDiff() {
+        fetch("/api/resetscan");
+        window.location.href = "/" + $(location).attr('pathname').split("/").pop();
     }
 </script>
 
