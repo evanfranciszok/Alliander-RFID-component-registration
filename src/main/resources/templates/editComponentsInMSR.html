@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit components in MSR</title>
+    <style>
+        :root {
+            --gray: #ebebeb;
+            --darkgray: #757575;
+            --lightPurple: #D1C4E9;
+            --darkPurple: #673AB7;
+            --green: #4CAF50;
+            --red: #db421b;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: row;
+            width: fit-content;
+            min-width: 50%;
+            border-radius: 5px;
+            margin: auto;
+            padding-top: 1px;
+            padding-bottom: 1px;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .info {
+            background-color: #ebebeb;
+            border-radius: 5px;
+            flex-grow: 1;
+            height: fit-content;
+        }
+
+        .components {
+            margin: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .component {
+            background-color: #ebebeb;
+            width: fit-content;
+            min-width: 50%;
+            border-radius: 5px;
+            border-bottom: 2px solid #D1C4E9;
+            transition: 0.1s;
+            margin: auto;
+            margin-bottom: 30px;
+            box-shadow: 3px 2px 8px -2px rgba(0, 0, 0, 0.3);
+        }
+
+        .component:hover {
+            border-bottom: 4px solid #673AB7;
+        }
+
+        .title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .name {
+            background-color: #757575;
+            width: fit-content;
+            padding: 10px;
+            border-bottom-right-radius: 5px;
+            border-top-left-radius: 5px;
+            color: white;
+            font-weight: bold;
+            box-shadow: inset -5px -5px 14px -11px #000;
+        }
+
+        .infoblock {
+            font-size: 0.8em;
+            display: flex;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .infoblock p {
+            margin: 0px;
+            padding: 5px;
+            padding-left: 10px;
+            color: gray;
+        }
+
+        .infoblock p:last-child {
+            color: black;
+            background-color: white;
+            flex-grow: 1;
+            border-radius: 3px;
+            margin-right: 10px;
+            padding-right: 10px;
+        }
+
+        .logo {
+            margin: auto;
+            width: 200px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .logo>img {
+            width: inherit;
+        }
+
+        .button {
+            background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div onclick="goHome()" class="logo">
+        <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
+    </div>
+    <div id="difference"></div>
+    <button onclick="nextCom()">Next component</button>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    var prevHTML = '';
+
+    $(document).ready(function () {
+        executeGetRequest();
+        // setInterval(executeGetRequest, 1000);
+    });
+
+    function executeGetRequest() {
+        $.ajax({
+            url: "/api/getDifference", success: function (result) {
+                if (prevHTML != result) {
+                    $("#difference").html(result);
+                    prevHTML = result;
+                }
+            }
+        });
+    }
+
+    function goHome() {
+        window.location.href = "/" + $(location).attr('pathname').split("/").pop();
+    }
+
+    function nextCom() {
+        console.log("getting next");
+        fetch("/api/getNextCom");
+        executeGetRequest();
+    }
+</script>
+
+</html>

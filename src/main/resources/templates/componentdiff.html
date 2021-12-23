@@ -30,9 +30,6 @@
         <div th:if="${info.com.id == 0}" class="name">
           <i class="fa fa-question"></i> unknown tag
         </div>
-        <a th:href="@{/edit/{path}(path=${info.com.rFID})}" class="edit">
-          <i class='fas fa-edit'></i>
-        </a>
       </div>
       <div th:if="${info.com.id == 0}" class="infoblock">
         <p>Tag code</p>

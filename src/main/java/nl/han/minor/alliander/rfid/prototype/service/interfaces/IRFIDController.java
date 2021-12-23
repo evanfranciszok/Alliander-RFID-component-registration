@@ -29,4 +29,8 @@ public interface IRFIDController {
   public List<ComponentDAO> getAllComponents(int mSRid);
 
   public List<ServiceInfoComponentDAO> getInfoOfScanForMSR(int mSRid);
+
+  public ServiceInfoComponentDAO getCurrentInfoComponentForMSR();
+
+  public void getNextInfoComponent();
 }

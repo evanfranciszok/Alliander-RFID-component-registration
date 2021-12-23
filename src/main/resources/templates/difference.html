@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>difference</title>
+</head>
+
+<body>
+    <div th:if="${difference != null}">
+        <div>
+            <h1 th:if="${difference.status == 'NOTFOUND'}">Are you sure you want to delete this component</h1>
+            <h1 th:if="${difference.status == 'NEW'}">Are you sure you want to add this component</h1>
+        </div>
+        <div class="component">
+            <div class=" title">
+                <div class="name" th:if="${difference.com.id != 0}" th:text="${difference.com.name}">
+                    name
+                </div>
+                <div th:if="${difference.com.id == 0}" class="name">
+                    <i class="fa fa-question"></i> unknown tag
+                </div>
+                <a th:href="@{/edit/{path}(path=${difference.com.rFID})}" class="edit">
+                    <i class='fas fa-edit'></i>
+                </a>
+            </div>
+            <div th:if="${difference.com.id == 0}" class="infoblock">
+                <p>Tag code</p>
+                <p th:text="${difference.com.rFID}"></p>
+            </div>
+            <div th:if="${difference.com.serialNumber != null}" class="infoblock">
+                <p>SerialNR</p>
+                <p th:text="${difference.com.serialNumber}"></p>
+            </div>
+            <div th:if="${difference.com.specification != null}" class="infoblock">
+                <p>Type</p>
+                <p th:text="${difference.com.specification.type}">hello</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -25,13 +25,15 @@ public class MainService implements IRFIDController {
   private static IScanner scanner;
   private static IComponentDatabase database;
   private static List<ComponentDAO> tags = new ArrayList<ComponentDAO>();
+  private static List<ServiceInfoComponentDAO> differenceInComponents = new ArrayList<ServiceInfoComponentDAO>();
+  private static int differenceIndex = 0;
 
   public MainService() {
     if (scanner == null) { // check if already initialized
-      this.scanStarted = false;
-      this.scanner = new ScanMocker(); // PFScanner();
-      this.database = new SQLiteDB();
-      this.connector = new TagConnector(scanner, database);
+      MainService.scanStarted = false;
+      MainService.scanner = new ScanMocker(); // PFScanner();
+      MainService.database = new SQLiteDB();
+      MainService.connector = new TagConnector(scanner, database);
     }
   }
 
@@ -71,6 +73,7 @@ public class MainService implements IRFIDController {
   @Override
   public void resetScan() {
     tags = new ArrayList<ComponentDAO>();
+    differenceIndex = 0;
   }
 
   private void addUniqueComponentsToList(List<ComponentDAO> newTags) {
@@ -117,13 +120,13 @@ public class MainService implements IRFIDController {
 
   @Override
   public List<ServiceInfoComponentDAO> getInfoOfScanForMSR(int mSRid) {
-    List<ServiceInfoComponentDAO> infoOfCom = new ArrayList<ServiceInfoComponentDAO>();
+    List<ServiceInfoComponentDAO> infoOfComponents = new ArrayList<ServiceInfoComponentDAO>();
     for (ComponentDAO com : getAllComponents(mSRid)) {
-      infoOfCom.add(new ServiceInfoComponentDAO(com, "NOTFOUND"));
+      infoOfComponents.add(new ServiceInfoComponentDAO(com, "NOTFOUND"));
     }
     for (ComponentDAO newCom : getComponentsFromScan()) {
       boolean comFound = false;
-      for (ServiceInfoComponentDAO infoCom : infoOfCom) {
+      for (ServiceInfoComponentDAO infoCom : infoOfComponents) {
         if (infoCom.getCom().getrFID().equals(newCom.getrFID())) {
           comFound = true;
           infoCom.setStatus("FOUND");
@@ -131,9 +134,26 @@ public class MainService implements IRFIDController {
         }
       }
       if (!comFound)
-        infoOfCom.add(new ServiceInfoComponentDAO(newCom, "NEW"));
+        infoOfComponents.add(new ServiceInfoComponentDAO(newCom, "NEW"));
     }
-    System.out.println(infoOfCom);
-    return infoOfCom;
+    differenceInComponents.clear();
+    for (ServiceInfoComponentDAO comInfo : infoOfComponents) {
+      if (!comInfo.getStatus().equals("FOUND"))
+        differenceInComponents.add(comInfo);
+    }
+    return infoOfComponents;
+  }
+
+  @Override
+  public ServiceInfoComponentDAO getCurrentInfoComponentForMSR() {
+    if (differenceIndex >= differenceInComponents.size()) {
+      return null;
+    }
+    return differenceInComponents.get(differenceIndex);
+  }
+
+  @Override
+  public void getNextInfoComponent() {
+    differenceIndex++;
   }
 }

@@ -14,6 +14,7 @@
       --lightPurple: #D1C4E9;
       --darkPurple: #673AB7;
       --green: #4CAF50;
+      --red: #db421b;
     }
 
     body {
@@ -141,7 +142,7 @@
     }
 
     .buttonred {
-      border: 2px solid #db421b;
+      border: 2px solid var(--red);
     }
 
     .button:hover {
@@ -150,7 +151,7 @@
     }
 
     .buttonred:hover {
-      background-color: #db421b;
+      background-color: var(--red);
     }
 
     .control {
@@ -163,7 +164,7 @@
     }
 
     .valueName {
-      background-color: red;
+      background-color: var(--red);
     }
 
     select {
@@ -254,7 +255,7 @@
     }
 
     .statusred {
-      color: red;
+      color: var(--red);
     }
 
     .statusorange {
@@ -374,6 +375,11 @@
   function resetScan() {
     fetch("/api/resetscan");
     executeGetRequest();
+  }
+
+  function endScan() {
+    stopScanning();
+    window.location.href = "/edit/msr/" + $(location).attr('pathname').split("/").pop();
   }
 </script>
 

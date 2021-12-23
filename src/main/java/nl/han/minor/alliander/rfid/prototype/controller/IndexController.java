@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
 import nl.han.minor.alliander.rfid.prototype.service.MainService;
+import nl.han.minor.alliander.rfid.prototype.service.DAOs.ServiceInfoComponentDAO;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
 
 @Controller
@@ -112,6 +113,21 @@ public class IndexController {
     return "tags2";
   }
 
+  @GetMapping("/api/getNextCom")
+  public ResponseEntity<String> getNextComponent(Model model) {
+    rfid.getNextInfoComponent();
+    return new ResponseEntity<>("scan started", HttpStatus.OK);
+  }
+
+  @GetMapping("/api/getDifference")
+  public String getDifference(Model model) {
+    ServiceInfoComponentDAO diff = rfid.getCurrentInfoComponentForMSR();
+    if (diff != null) {
+      model.addAttribute("difference", diff);
+    }
+    return "difference";
+  }
+
   @GetMapping("/edit/{rfid}")
   public String getEditComponent(Model model, @PathVariable("rfid") String rfid) {
     model.addAttribute("component", createNewOrFindComponent(rfid));
@@ -127,6 +143,11 @@ public class IndexController {
     }
     model.addAttribute("component", createNewOrFindComponent(rfid));
     return "editComponent";
+  }
+
+  @GetMapping("/edit/msr/{msrid}")
+  public String editMsrComponents(Model model, @PathVariable("msrid") int mSRId) {
+    return "editComponentsInMSR";
   }
 
   private ComponentDAO createNewOrFindComponent(String rfid) {
