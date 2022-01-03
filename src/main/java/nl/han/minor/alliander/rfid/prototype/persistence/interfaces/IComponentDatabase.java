@@ -22,4 +22,8 @@ public interface IComponentDatabase {
   public List<ComponentDAO> getAllComponents();
 
   public List<ComponentDAO> getAllComponentFromMSR(int mSRId);
+
+  public boolean addComToMSR(ComponentDAO com, Integer selectedMSRId);
+
+  public boolean removeComToMSR(ComponentDAO com, Integer selectedMSRId);
 }

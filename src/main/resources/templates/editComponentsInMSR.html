@@ -210,8 +210,6 @@
         <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
     </div>
     <div id="difference"></div>
-    <button onclick="nextCom()">Next component</button>
-    <button onclick="cancelDiff()">cancel</button>
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -247,6 +245,14 @@
     function cancelDiff() {
         fetch("/api/resetscan");
         window.location.href = "/" + $(location).attr('pathname').split("/").pop();
+    }
+
+    function undoDifference() {
+        fetch("/api/undoDifference").then(() => { nextCom(); });
+    }
+
+    function performDifference() {
+        fetch("/api/performDifference").then(() => { nextCom(); });
     }
 </script>
 

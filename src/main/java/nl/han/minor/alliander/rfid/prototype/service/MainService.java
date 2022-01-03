@@ -1,6 +1,9 @@
 package nl.han.minor.alliander.rfid.prototype.service;
 
 import java.util.List;
+
+import javax.print.attribute.SupportedValuesAttribute;
+
 import java.util.ArrayList;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +30,7 @@ public class MainService implements IRFIDController {
   private static List<ComponentDAO> tags = new ArrayList<ComponentDAO>();
   private static List<ServiceInfoComponentDAO> differenceInComponents = new ArrayList<ServiceInfoComponentDAO>();
   private static int differenceIndex = 0;
+  private static Integer selectedMSRId = null;
 
   public MainService() {
     if (scanner == null) { // check if already initialized
@@ -76,6 +80,7 @@ public class MainService implements IRFIDController {
     tags = new ArrayList<ComponentDAO>();
     differenceInComponents = new ArrayList<ServiceInfoComponentDAO>();
     differenceIndex = 0;
+    selectedMSRId = null;
   }
 
   private void addUniqueComponentsToList(List<ComponentDAO> newTags) {
@@ -117,12 +122,14 @@ public class MainService implements IRFIDController {
 
   @Override
   public List<ComponentDAO> getAllComponents(int mSRId) {
+    selectedMSRId = mSRId;
     return database.getAllComponentFromMSR(mSRId);
   }
 
   @Override
   public List<ServiceInfoComponentDAO> getInfoOfScanForMSR(int mSRid) {
     List<ServiceInfoComponentDAO> infoOfComponents = new ArrayList<ServiceInfoComponentDAO>();
+    selectedMSRId = mSRid;
     for (ComponentDAO com : getAllComponents(mSRid)) {
       infoOfComponents.add(new ServiceInfoComponentDAO(com, "NOTFOUND"));
     }
@@ -148,6 +155,7 @@ public class MainService implements IRFIDController {
 
   @Override
   public ServiceInfoComponentDAO getCurrentInfoComponentForMSR() {
+    System.out.println(differenceIndex + "= index || " + differenceInComponents.size() + "= act size");
     if (differenceIndex >= differenceInComponents.size()) {
       return null;
     }
@@ -157,5 +165,19 @@ public class MainService implements IRFIDController {
   @Override
   public void getNextInfoComponent() {
     differenceIndex++;
+    System.out.println(differenceInComponents);
+  }
+
+  @Override
+  public void UpdateMSR() {
+    for (ServiceInfoComponentDAO infoCom : differenceInComponents) {
+      if (infoCom.isPerformAction()) {
+        if (infoCom.getStatus().equals("NEW")) {
+          database.addComToMSR(infoCom.getCom(), selectedMSRId);
+        } else if (infoCom.getStatus().equals("NOTFOUND")) {
+          database.removeComToMSR(infoCom.getCom(), selectedMSRId);
+        }
+      }
+    }
   }
 }

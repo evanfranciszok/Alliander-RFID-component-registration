@@ -114,6 +114,38 @@ public class SQLiteDB implements IComponentDatabase {
     return true;
   }
 
+  @Override
+  public boolean addComToMSR(ComponentDAO com, Integer selectedMSRId) {
+    try {
+      makeConnection();
+      String query;
+      query = "";
+      // TODO: create insert query and check if component is not already in other MSR
+      System.out.println(executeUpdateQuery(query));
+      closeConnection();
+    } catch (Exception e) {
+      System.err.println(e);
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public boolean removeComToMSR(ComponentDAO com, Integer selectedMSRId) {
+    try {
+      makeConnection();
+      String query;
+      query = "";
+      // TODO: create delete query
+      System.out.println(executeUpdateQuery(query));
+      closeConnection();
+    } catch (Exception e) {
+      System.err.println(e);
+      return false;
+    }
+    return true;
+  }
+
   private ComponentDAO getSingleComponent(String query) {
     ComponentDAO component = null;
     try {

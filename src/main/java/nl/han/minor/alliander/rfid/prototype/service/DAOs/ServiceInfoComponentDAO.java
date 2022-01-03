@@ -5,10 +5,20 @@ import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
 public class ServiceInfoComponentDAO {
   private ComponentDAO com;
   private String status;
+  private boolean performAction;
 
   public ServiceInfoComponentDAO(ComponentDAO com, String status) {
     this.com = com;
     this.status = status;
+    this.setPerformAction(false);
+  }
+
+  public boolean isPerformAction() {
+    return performAction;
+  }
+
+  public void setPerformAction(boolean performAction) {
+    this.performAction = performAction;
   }
 
   public ComponentDAO getCom() {
@@ -29,7 +39,7 @@ public class ServiceInfoComponentDAO {
 
   @Override
   public String toString() {
-    return "infoCom [com=" + com.getrFID() + ", status=" + status + "]";
+    return "infoCom [com=" + com.getrFID() + ", status=" + status + ", perform action=" + performAction + "]";
   }
 
 }

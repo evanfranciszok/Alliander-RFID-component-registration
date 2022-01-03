@@ -39,15 +39,15 @@
         <div th:if="${difference.status == 'NOTFOUND'}">
             <div class="choiceMessage">Are you sure you removed this component from the MSR?</div>
             <div class="choiceButtons">
-                <button id="stop" class="button buttonred" onclick="stopScanning()">Do not remove</button>
-                <button id="start" class="button" onclick="startScanning()">Remove component</button>
+                <button id="stop" class="button buttonred" onclick="undoDifference()">Do not remove</button>
+                <button id="start" class="button" onclick="performDifference()">Remove component</button>
             </div>
         </div>
         <div th:if="${difference.status == 'NEW'}">
             <div class="choiceMessage">Are you sure you added this component to the MSR?</div>
             <div class="choiceButtons">
-                <button id="stop" class="button buttonred" onclick="stopScanning()">Do not add</button>
-                <button id="start" class="button" onclick="startScanning()">Add component</button>
+                <button id="stop" class="button buttonred" onclick="undoDifference()">Do not add</button>
+                <button id="start" class="button" onclick="performDifference()">Add component</button>
             </div>
         </div>
     </div>

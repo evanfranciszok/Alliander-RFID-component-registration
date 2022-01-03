@@ -113,6 +113,22 @@ public class IndexController {
     return "tags2";
   }
 
+  @GetMapping("/api/undoDifference")
+  public ResponseEntity<String> undoDifference(Model model) {
+    System.out.println("UndoDifference");
+    if (rfid.getCurrentInfoComponentForMSR() != null)
+      rfid.getCurrentInfoComponentForMSR().setPerformAction(false);
+    return new ResponseEntity<>("scan started", HttpStatus.OK);
+  }
+
+  @GetMapping("/api/performDifference")
+  public ResponseEntity<String> performDifference(Model model) {
+    System.out.println("performDifference");
+    if (rfid.getCurrentInfoComponentForMSR() != null)
+      rfid.getCurrentInfoComponentForMSR().setPerformAction(true);
+    return new ResponseEntity<>("scan started", HttpStatus.OK);
+  }
+
   @GetMapping("/api/getNextCom")
   public ResponseEntity<String> getNextComponent(Model model) {
     rfid.getNextInfoComponent();
@@ -124,8 +140,10 @@ public class IndexController {
     ServiceInfoComponentDAO diff = rfid.getCurrentInfoComponentForMSR();
     if (diff != null) {
       model.addAttribute("difference", diff);
+      return "difference";
     }
-    return "difference";
+    rfid.UpdateMSR();
+    return "noDifference";
   }
 
   @GetMapping("/edit/{rfid}")

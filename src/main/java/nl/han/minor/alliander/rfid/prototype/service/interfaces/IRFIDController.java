@@ -33,4 +33,6 @@ public interface IRFIDController {
   public ServiceInfoComponentDAO getCurrentInfoComponentForMSR();
 
   public void getNextInfoComponent();
+
+  public void UpdateMSR();
 }
