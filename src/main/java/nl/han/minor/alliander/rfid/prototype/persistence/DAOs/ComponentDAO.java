@@ -106,7 +106,8 @@ public class ComponentDAO implements Serializable {
 
   @Override
   public String toString() {
-    return "ComponentDAO [comment=" + comment + ", dateOfInstallment=" + dateOfInstallment + ", id=" + id + ", name="
+    return "ComponentDAO [comment=" + comment + ", dateOfInstallment=" + dateOfInstallment + ", id=" + id + ", rfid="
+        + rFID + ", name="
         + name + ", productionDate=" + productionDate + ", rSSI=" + rSSI + ", serialNumber=" + serialNumber
         + ", specification=" + specification + ", supplier=" + supplier + "]";
   }

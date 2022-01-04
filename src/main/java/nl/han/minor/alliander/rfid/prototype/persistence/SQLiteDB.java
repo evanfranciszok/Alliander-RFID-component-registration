@@ -100,7 +100,9 @@ public class SQLiteDB implements IComponentDatabase {
             + "'";
       } else {
         query = "INSERT INTO Component (RFID, SerialNumber, Supplier, Name, Comment) VALUES ('" + com.getrFID() + "','"
-            + com.getSerialNumber() + "','" + com.getSupplier() + "','" + com.getName() + "','" + com.getComment()
+            + com.getSerialNumber() + "','" + com.getSupplier() + "','" + (com.getName() == null ? "Undefined"
+                : com.getName())
+            + "','" + com.getComment()
             + "');";
       }
       // ", ProductionDate = " + com.getProductionDate() + ", DateOfInstallment = " +
@@ -118,10 +120,19 @@ public class SQLiteDB implements IComponentDatabase {
   public boolean addComToMSR(ComponentDAO com, Integer selectedMSRId) {
     try {
       makeConnection();
+      if (com.getSerialNumber() == null) {
+        addOrUpdateComponent(com);
+        com = getComponentFromRFID(com.getrFID());
+      }
       String query;
       query = "";
+      query = "DELETE FROM Component_in_MSR WHERE ComponentID IS '" + com.getId() + "';";
+      executeUpdateQuery(query);
+      query = "INSERT INTO Component_in_MSR (MSRID, ComponentID) VALUES ('" + selectedMSRId + "','" + com.getId()
+          + "');";
+      executeUpdateQuery(query);
       // TODO: create insert query and check if component is not already in other MSR
-      System.out.println(executeUpdateQuery(query));
+      // System.out.println(executeUpdateQuery(query));
       closeConnection();
     } catch (Exception e) {
       System.err.println(e);
@@ -135,9 +146,8 @@ public class SQLiteDB implements IComponentDatabase {
     try {
       makeConnection();
       String query;
-      query = "";
-      // TODO: create delete query
-      System.out.println(executeUpdateQuery(query));
+      query = "DELETE FROM Component_in_MSR WHERE ComponentID IS '" + com.getId() + "';";
+      executeUpdateQuery(query);
       closeConnection();
     } catch (Exception e) {
       System.err.println(e);

@@ -143,6 +143,7 @@ public class IndexController {
       return "difference";
     }
     rfid.UpdateMSR();
+    rfid.resetScan();
     return "noDifference";
   }
 

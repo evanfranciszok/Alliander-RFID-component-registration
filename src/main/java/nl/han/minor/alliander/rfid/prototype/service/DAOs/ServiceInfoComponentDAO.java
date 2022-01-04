@@ -39,7 +39,8 @@ public class ServiceInfoComponentDAO {
 
   @Override
   public String toString() {
-    return "infoCom [com=" + com.getrFID() + ", status=" + status + ", perform action=" + performAction + "]";
+    return "infoCom [com=" + com.getrFID() + " (ser = " + com.getSerialNumber() + ")" + ", status=" + status
+        + ", perform action=" + performAction + "]";
   }
 
 }
