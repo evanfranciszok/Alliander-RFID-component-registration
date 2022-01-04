@@ -131,8 +131,6 @@ public class SQLiteDB implements IComponentDatabase {
       query = "INSERT INTO Component_in_MSR (MSRID, ComponentID) VALUES ('" + selectedMSRId + "','" + com.getId()
           + "');";
       executeUpdateQuery(query);
-      // TODO: create insert query and check if component is not already in other MSR
-      // System.out.println(executeUpdateQuery(query));
       closeConnection();
     } catch (Exception e) {
       System.err.println(e);
@@ -229,38 +227,39 @@ public class SQLiteDB implements IComponentDatabase {
       return null;
   }
 
-  private SpecificationDAO createSpecificationDAO(int id, String type) throws SQLException {
-    if (type == null || type.isEmpty())
-      return null;
-    else {
-      String query = "select * from " + type + " where id is '" + id + "'";
-      ResultSet resultSet = executeSelectQuery(query);
-      if (resultSet.next()) {
-        switch (type) {
-          case "Travo":
-            return createTravoDAO(resultSet);
-          case "Fuse":
-            return createFuseDAO(resultSet);
-          default:
-            break;
-        }
-      }
-      return null;
-    }
-  }
+  // private SpecificationDAO createSpecificationDAO(int id, String type) throws
+  // SQLException {
+  // if (type == null || type.isEmpty())
+  // return null;
+  // else {
+  // String query = "select * from " + type + " where id is '" + id + "'";
+  // ResultSet resultSet = executeSelectQuery(query);
+  // if (resultSet.next()) {
+  // switch (type) {
+  // case "Travo":
+  // return createTravoDAO(resultSet);
+  // case "Fuse":
+  // return createFuseDAO(resultSet);
+  // default:
+  // break;
+  // }
+  // }
+  // return null;
+  // }
+  // }
 
-  private TravoDAO createTravoDAO(ResultSet result) throws SQLException {
-    int kva = result.getInt("KVA");
-    int fase = result.getInt("Fase");
-    int hz = result.getInt("Hz");
-    int weight = result.getInt("Weight");
-    String cooling = result.getString("CoolingType");
-    return new TravoDAO(kva, fase, hz, weight, cooling);
-  }
+  // private TravoDAO createTravoDAO(ResultSet result) throws SQLException {
+  // int kva = result.getInt("KVA");
+  // int fase = result.getInt("Fase");
+  // int hz = result.getInt("Hz");
+  // int weight = result.getInt("Weight");
+  // String cooling = result.getString("CoolingType");
+  // return new TravoDAO(kva, fase, hz, weight, cooling);
+  // }
 
-  private FuseDAO createFuseDAO(ResultSet result) throws SQLException {
-    int va = result.getInt("VA");
-    int volt = result.getInt("Volt");
-    return new FuseDAO(va, volt);
-  }
+  // private FuseDAO createFuseDAO(ResultSet result) throws SQLException {
+  // int va = result.getInt("VA");
+  // int volt = result.getInt("Volt");
+  // return new FuseDAO(va, volt);
+  // }
 }
