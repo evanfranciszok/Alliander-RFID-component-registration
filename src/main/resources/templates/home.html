@@ -1,37 +1,118 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <title>Home Page</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
+  <title>RFID registration</title>
   <style>
-    p {
-      color: red;
+    :root {
+      --gray: #ebebeb;
+      --darkgray: #757575;
+      --lightPurple: #D1C4E9;
+      --darkPurple: #673AB7;
+      --green: #4CAF50;
+      --red: #db421b;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      width: fit-content;
+      min-width: 50%;
+      border-radius: 5px;
+      margin: auto;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      margin-bottom: 30px;
+      flex-grow: 1;
+    }
+
+    .info {
+      background-color: #ebebeb;
+      border-radius: 5px;
+      flex-grow: 1;
+      height: fit-content;
+    }
+
+    .components {
+      margin: auto;
+      display: flex;
+      justify-content: center;
     }
 
     .component {
-      background-color: darkgray;
+      background-color: #ebebeb;
       width: fit-content;
-      min-width: 500px;
+      min-width: 50%;
+      border-radius: 5px;
+      border-bottom: 2px solid #D1C4E9;
+      transition: 0.1s;
       margin: auto;
-      margin-bottom: 10px;
-      padding: 10px;
+      margin-bottom: 30px;
+      box-shadow: 3px 2px 8px -2px rgba(0, 0, 0, 0.3);
+    }
+
+    .component:hover {
+      border-bottom: 4px solid #673AB7;
+    }
+
+    .title {
       display: flex;
       flex-direction: row;
-      justify-content: start;
-      border-radius: 10px;
+      justify-content: space-between;
     }
 
-    .value {
-      background-color: gray;
-      border-radius: 5px;
-      padding: 20px;
+    .edit {
+      color: #757575;
+      padding: 11px;
+      font-size: 1.1em;
+      transition: 0.2s;
+    }
+
+    .edit:hover {
+      color: black;
+    }
+
+    .name {
+      background-color: #757575;
+      width: fit-content;
+      padding: 10px;
+      border-bottom-right-radius: 5px;
+      border-top-left-radius: 5px;
       color: white;
-      font-size: large;
       font-weight: bold;
-      margin-right: 10px;
+      box-shadow: inset -5px -5px 14px -11px #000;
     }
 
-    .value:last-child {
-      margin-right: 0;
+    .infoblock {
+      font-size: 0.8em;
+      display: flex;
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .infoblock p {
+      margin: 0px;
+      padding: 5px;
+      padding-left: 10px;
+      color: gray;
+    }
+
+    .infoblock p:last-child {
+      color: black;
+      background-color: white;
+      flex-grow: 1;
+      border-radius: 3px;
+      margin-right: 10px;
+      padding-right: 10px;
     }
 
     .logo {
@@ -44,6 +125,142 @@
     .logo>img {
       width: inherit;
     }
+
+    .button {
+      background-color: white;
+      color: black;
+      border: 2px solid var(--green);
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+      padding: 11px;
+      margin-left: 11px;
+    }
+
+    .buttonred {
+      border: 2px solid var(--red);
+    }
+
+    .button:hover {
+      background-color: var(--green);
+      color: white;
+    }
+
+    .buttonred:hover {
+      background-color: var(--red);
+    }
+
+    .control {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .valueName {
+      background-color: var(--red);
+    }
+
+    select {
+      /* Reset Select */
+      appearance: none;
+      outline: 0;
+      border: 0;
+      box-shadow: none;
+      /* Personalize */
+      flex: 1;
+      padding: 0 1em;
+      background-color: var(--gray);
+      background-image: none;
+      cursor: pointer;
+    }
+
+    /* Remove IE arrow */
+    select::-ms-expand {
+      display: none;
+    }
+
+    /* Custom Select wrapper */
+    .select {
+      margin: auto;
+      margin-bottom: 50px;
+      position: relative;
+      display: flex;
+      width: 20em;
+      height: 3em;
+      border-radius: .25em;
+      overflow: hidden;
+    }
+
+    /* Arrow */
+    .select::after {
+      content: '\25BC';
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 1em;
+      /* background-color: var(--darkgray); */
+      color: var(--lightPurple);
+      transition: .25s all ease;
+      pointer-events: none;
+    }
+
+    /* Transition */
+    .select:hover::after {
+      color: var(--darkPurple);
+    }
+
+    .select h1 {
+      margin: 0 0 0.25em;
+    }
+
+    .select a {
+      font-weight: bold;
+      color: var(--gray);
+      text-decoration: none;
+      padding: .25em;
+      border: 0;
+      border-radius: .25em;
+      background: white;
+    }
+
+    .componentInfo {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 50%;
+      min-width: fit-content;
+      margin: auto;
+    }
+
+    .componentInfo>.component {
+      width: 100%;
+    }
+
+    .status {
+      font-size: 2em;
+      margin-left: 20px;
+      padding-bottom: 30px;
+      width: 40px;
+    }
+
+    .statusgreen {
+      color: var(--green);
+    }
+
+    .statusred {
+      color: var(--red);
+    }
+
+    .statusorange {
+      color: orange;
+    }
   </style>
 </head>
 
@@ -51,13 +268,120 @@
   <div class="logo">
     <img src="https://www.modderkolk.nl/wp-content/uploads/logo-alliander.jpg" alt="Alliander-logo">
   </div>
-  <div class="component" th:each="tag: ${tags}">
-    <div class="value" th:text="${tag.id}">ID: <span></span></div>
-    <div class="value" th:text="${tag.name}">name: xxx</div>
-    <div class="value" th:text="${tag.supplier}">Supplier: xxx</div>
-    <div class="value" th:if="${tag.dateOfInstallment != null}" th:text="${tag.dateOfInstallment}">dateOfInstallment:
-      xxx</div>
+  <div id="select" class="select">
+    <select>
+      <option th:if="${comInMsr}" value="comInMsr">All components in MRS</option>
+      <option value="tags">Scan all tags</option>
+      <option value="msr">Get all MSR's</option>
+      <option value="com">Get all components</option>
+    </select>
+  </div>
+  <div id="components">
   </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  var prevHTML = '';
+  var scanning = false;
+  var searchType = $("#select option:selected").val();
+
+  $(document).ready(function () {
+    executeGetRequest();
+    setInterval(executeGetRequest, 1000);
+    $("#select").change(function () {
+      searchType = $("#select option:selected").val();
+      executeGetRequest();
+      prevHTML = "";
+    });
+  });
+
+  function executeGetRequest() {
+    switch (searchType) {
+      case "tags":
+        $.ajax({
+          url: "api/allTags", success: function (result) {
+            if (prevHTML != result) {
+              $("#components").html(result);
+              if (scanning) {
+                $("#start").addClass("hidden");
+                $("#stop").removeClass("hidden");
+              }
+              prevHTML = result;
+            }
+          }
+        });
+        break;
+      case "msr":
+        $.ajax({
+          url: "api/allMSR", success: function (result) {
+            if (prevHTML != result) {
+              $("#components").html(result);
+              prevHTML = result;
+            }
+          }
+        });
+        break;
+      case "com":
+        $.ajax({
+          url: "api/allCom", success: function (result) {
+            if (prevHTML != result) {
+              $("#components").html(result);
+              prevHTML = result;
+            }
+          }
+        });
+        break;
+      case "comInMsr":
+        if (scanning) {
+          $.ajax({
+            url: "/api/allComDiff/" + $(location).attr('pathname').substring(1), success: function (result) {
+              if (prevHTML != result) {
+                $("#components").html(result);
+                prevHTML = result;
+              }
+            }
+          });
+        } else {
+          $.ajax({
+            url: "/api/allCom/" + $(location).attr('pathname').substring(1), success: function (result) {
+              if (prevHTML != result) {
+                $("#components").html(result);
+                prevHTML = result;
+              }
+            }
+          });
+        }
+        break;
+      default:
+        $("#components").html("<p style=\"margin: auto; \">please select a option from the select box</p>");
+        break;
+    }
+  }
+
+  function startScanning() {
+    $("#start").addClass("hidden");
+    $("#stop").removeClass("hidden");
+    scanning = true;
+    fetch("/api/startscan");
+  }
+
+  function stopScanning() {
+    $("#start").removeClass("hidden");
+    $("#stop").addClass("hidden");
+    scanning = false;
+    fetch("/api/stopscan");
+  }
+
+  function resetScan() {
+    fetch("/api/resetscan");
+    executeGetRequest();
+  }
+
+  function endScan() {
+    fetch("/api/stopscan").then(() => {
+      window.location.href = "/edit/msr/" + $(location).attr('pathname').split("/").pop();
+    })
+  }
+</script>
 
 </html>

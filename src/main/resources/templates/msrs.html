@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSRs</title>
+</head>
+
+<body>
+    <div class="component" th:each="msr: ${msrs}">
+        <div class=" title">
+            <div class="name" th:text="${msr.address}">
+                address
+            </div>
+            <a th:href="@{/{path}(path=${msr.iD})}" class="edit">
+                <i class='fas fa-sitemap'></i>
+            </a>
+        </div>
+        <div class="infoblock">
+            <p>SerialNR</p>
+            <p th:text="${msr.serialNumber}"></p>
+        </div>
+        <div th:if="${msr.nominalCurrent != null}" class="infoblock">
+            <p>nominalCurrent</p>
+            <p th:text="${msr.nominalCurrent}"></p>
+        </div>
+        <div th:if="${msr.owner != null}" class="infoblock">
+            <p>owner</p>
+            <p th:text="${msr.owner}"></p>
+        </div>
+        <div th:if="${msr.administrator != null}" class="infoblock">
+            <p>administrator</p>
+            <p th:text="${msr.administrator}"></p>
+        </div>
+        <div th:if="${msr.state != null}" class="infoblock">
+            <p>state</p>
+            <p th:text="${msr.state}"></p>
+        </div>
+    </div>
+</body>
+
+</html>

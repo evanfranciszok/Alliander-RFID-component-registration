@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>components</title>
+</head>
+
+<body>
+  <div class="header">
+    <div class="info">
+      <div class="infoblock">
+        <p th:text="${name}">amount</p>
+        <p th:text="${amount}">0</p>
+      </div>
+    </div>
+    <div class="control">
+      <button id="stop" class="button buttonred" onclick="stopScanning();resetScan()">Cancel scan</button>
+      <button class="button" onclick="endScan()">End scan</button>
+    </div>
+  </div>
+  <div class="componentInfo" th:each="info: ${components}">
+    <div class="component">
+      <div class=" title">
+        <div class="name" th:if="${info.com.id != 0}" th:text="${info.com.name}">
+          name
+        </div>
+        <div th:if="${info.com.id == 0}" class="name">
+          <i class="fa fa-question"></i> unknown tag
+        </div>
+      </div>
+      <div th:if="${info.com.id == 0}" class="infoblock">
+        <p>Tag code</p>
+        <p th:text="${info.com.rFID}"></p>
+      </div>
+      <div th:if="${info.com.serialNumber != null}" class="infoblock">
+        <p>SerialNR</p>
+        <p th:text="${info.com.serialNumber}"></p>
+      </div>
+      <div th:if="${info.com.specification != null}" class="infoblock">
+        <p>Type</p>
+        <p th:text="${info.com.specification.type}">hello</p>
+      </div>
+    </div>
+    <div class="status">
+      <i th:if="${info.status == 'FOUND'}" class='fas fa-check statusgreen'></i>
+      <i th:if="${info.status == 'NOTFOUND'}" class='fas fa-times statusred'></i>
+      <i th:if="${info.status == 'NEW'}" class='fas fa-plus statusorange'></i>
+    </div>
+  </div>
+</body>
+
+</html>
