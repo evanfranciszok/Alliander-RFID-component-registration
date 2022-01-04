@@ -2,8 +2,6 @@ package nl.han.minor.alliander.rfid.prototype.service;
 
 import java.util.List;
 
-import javax.print.attribute.SupportedValuesAttribute;
-
 import java.util.ArrayList;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Component;
 import nl.han.minor.alliander.rfid.prototype.service.DAOs.ServiceInfoComponentDAO;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
-import nl.han.minor.alliander.rfid.prototype.persistence.PFScanner;
 import nl.han.minor.alliander.rfid.prototype.persistence.SQLiteDB;
 import nl.han.minor.alliander.rfid.prototype.persistence.ScanMocker;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
@@ -127,6 +124,8 @@ public class MainService implements IRFIDController {
 
   @Override
   public List<ServiceInfoComponentDAO> getInfoOfScanForMSR(int mSRid) {
+    // TODO: I know that there could be some bugs with this function in combination
+    // with other functions, but for the demo it is not worth fixing these
     List<ServiceInfoComponentDAO> infoOfComponents = new ArrayList<ServiceInfoComponentDAO>();
     selectedMSRId = mSRid;
     for (ComponentDAO com : getAllComponents(mSRid)) {
