@@ -32,8 +32,8 @@ Here is a list with all the soft- and hardware and a short description of the us
 | -------------------------------------- | ------------------------------------------------------------ |
 | SQLite                                 | To store all the digital twins of the components and the MSRs |
 | GSON                                   | To Parse JSON response messages from the RFID reader         |
-| pepperl-fuchs IUT-F190-B40-2V1D-FR1-01 | To scan RFID tags using UHF RFID                             |
-| Maven                                  | Used to import GSON and necessities for Spring Boot          |
+| Pepperl+Fuchs IUT-F190-B40-2V1D-FR1-01 | To scan RFID tags using UHF RFID                             |
+| Maven                                  | Used to import GSON and nessesaties for Spring Boot          |
 | Spring Boot                            | Handel the UI                                                |
 | Thymeleaf                              | Server-side template engine for creating the dynamic web page |
 
