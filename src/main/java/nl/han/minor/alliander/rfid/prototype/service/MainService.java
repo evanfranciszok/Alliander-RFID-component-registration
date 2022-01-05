@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import nl.han.minor.alliander.rfid.prototype.service.DAOs.ServiceInfoComponentDAO;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IInfoConnector;
 import nl.han.minor.alliander.rfid.prototype.service.interfaces.IRFIDController;
+import nl.han.minor.alliander.rfid.prototype.persistence.PFScanner;
 import nl.han.minor.alliander.rfid.prototype.persistence.SQLiteDB;
 import nl.han.minor.alliander.rfid.prototype.persistence.ScanMocker;
 import nl.han.minor.alliander.rfid.prototype.persistence.DAOs.ComponentDAO;
@@ -32,7 +33,9 @@ public class MainService implements IRFIDController {
   public MainService() {
     if (scanner == null) { // check if already initialized
       MainService.scanStarted = false;
-      MainService.scanner = new ScanMocker(); // PFScanner();
+      // MainService.scanner = new ScanMocker(); // fake scanner for testing the code
+      // and the UI without the reader
+      MainService.scanner = new PFScanner(); // real PF reader for testing witht the actual reader
       MainService.database = new SQLiteDB();
       MainService.connector = new TagConnector(scanner, database);
     }
