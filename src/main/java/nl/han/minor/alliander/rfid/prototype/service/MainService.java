@@ -33,9 +33,13 @@ public class MainService implements IRFIDController {
   public MainService() {
     if (scanner == null) { // check if already initialized
       MainService.scanStarted = false;
-      // MainService.scanner = new ScanMocker(); // fake scanner for testing the code
-      // and the UI without the reader
-      MainService.scanner = new PFScanner(); // real PF reader for testing witht the actual reader
+      
+      // fake scanner for testing the code and the UI without the reader
+      // MainService.scanner = new ScanMocker(); 
+      
+      // real PF reader for testing witht the actual reader
+      MainService.scanner = new PFScanner();
+      
       MainService.database = new SQLiteDB();
       MainService.connector = new TagConnector(scanner, database);
     }
