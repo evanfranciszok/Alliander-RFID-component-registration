@@ -1,6 +1,6 @@
 # Alliander-RFID-component-registration
 
-This is a Java project for demo purposes and to test the possibility of using RFID technology in MSRs to automate (a part of) the registration process. The method chosen to automate (a part of) the registration process is to provide every component in an MSR with an RFID tag. This tag is linked with a digital twin in the cloud. Hereby creating a digital representation of all elements of the MSRs and the component herein.
+This is a Java project for demo purposes, and to test the possibility of using RFID technology in MSRs to automate (a part of) the registration process. The method chosen to automate (a part of) the registration process is to provide every component in an MSR with an RFID tag. This tag is linked with a digital twin in the cloud. Hereby creating a digital representation of all elements of the MSRs and the component herein.
 
 This project is done for the R&D department at Alliander by students of the HAN at the minor Smart Industry (2021-2022).
 
@@ -24,7 +24,7 @@ If your program is running, you should see an output in the terminal with the gi
 
 ## External soft- and hardware
 
-In this project, external soft- and hardware has been used. They have been chosen as they were the best fit for the short time span in which the project had to be executed, in combination with the knowledge of the student at the time. These choices would probably not be the best fit for any other use cases with this project other than demo purposes.
+In this project, external soft- and hardware has been used. They have been chosen as they were the best fit for the short time span in which the project had to be executed, in combination with the knowledge of the students at the time. These choices would probably not be the best fit for any other use cases with this project other than demo purposes.
 
 Here is a list with all the soft- and hardware and a short description of the usages of it in this project:
 
